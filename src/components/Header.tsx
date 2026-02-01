@@ -73,7 +73,7 @@ export default function Header() {
                             animate={{ scale: isCompact ? 0.9 : 1 }}
                         >
                             <Link
-                                href="https://nexa-crm.vercel.app"
+                                href="https://nexaxotics-crm.vercel.app/admin/login"
                                 target="_blank"
                                 className="px-5 py-2 text-sm font-bold text-neutral-600 hover:text-primary transition-colors hidden sm:block"
                             >
@@ -105,7 +105,7 @@ export default function Header() {
                         <Link href="#systems" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-2 text-sm font-medium hover:bg-neutral-100 rounded-xl transition-colors">{t('header.systems')}</Link>
                         <Link href="#industries" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-2 text-sm font-medium hover:bg-neutral-100 rounded-xl transition-colors">{t('header.industries')}</Link>
                         <Link href="#pricing" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-2 text-sm font-medium hover:bg-neutral-100 rounded-xl transition-colors">{t('header.pricing')}</Link>
-                        <Link href="https://nexa-crm.vercel.app" target="_blank" className="px-4 py-2 text-sm font-bold text-primary hover:bg-primary/5 rounded-xl transition-colors">Client Login</Link>
+                        <Link href="https://nexaxotics-crm.vercel.app/admin/login" target="_blank" className="px-4 py-2 text-sm font-bold text-primary hover:bg-primary/5 rounded-xl transition-colors">Client Login</Link>
                     </nav>
                 </motion.div>
             </motion.div>
