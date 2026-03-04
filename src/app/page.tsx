@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Interactive3DCard from "@/components/Interactive3DCard";
 import PricingCard from "@/components/PricingCard";
 import FAQAccordion from "@/components/FAQAccordion";
+import OurWork from "@/components/OurWork";
 import { supabase } from '@/lib/supabase';
 import {
     Zap,
@@ -964,6 +965,9 @@ export default function Home() {
                     </motion.div>
                 </div>
             </section>
+
+            {/* OUR WORK SECTION */}
+            <OurWork />
 
             {/* Testimonials */}
             <section className="py-24 px-6 border-y border-white/[0.06] relative z-10">

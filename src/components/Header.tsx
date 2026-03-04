@@ -66,6 +66,7 @@ export default function Header() {
                         <Link href="#systems" className="px-4 py-1.5 text-sm font-heading font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">{t('header.systems')}</Link>
                         <Link href="#industries" className="px-4 py-1.5 text-sm font-heading font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">{t('header.industries')}</Link>
                         <Link href="#pricing" className="px-4 py-1.5 text-sm font-heading font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">{t('header.pricing')}</Link>
+                        <Link href="#our-work" className="px-4 py-1.5 text-sm font-heading font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">Our Work</Link>
                     </motion.nav>
 
                     {/* Right Side */}
@@ -117,6 +118,7 @@ export default function Header() {
                         <Link href="#systems" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-2 text-sm font-medium hover:bg-neutral-100 rounded-xl transition-colors">{t('header.systems')}</Link>
                         <Link href="#industries" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-2 text-sm font-medium hover:bg-neutral-100 rounded-xl transition-colors">{t('header.industries')}</Link>
                         <Link href="#pricing" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-2 text-sm font-medium hover:bg-neutral-100 rounded-xl transition-colors">{t('header.pricing')}</Link>
+                        <Link href="#our-work" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-2 text-sm font-medium hover:bg-neutral-100 rounded-xl transition-colors">Our Work</Link>
                         <Link href="https://nexaxotics-crm.vercel.app/admin/login" target="_blank" className="px-4 py-2 text-sm font-bold text-primary hover:bg-primary/5 rounded-xl transition-colors">Client Login</Link>
                     </nav>
                 </motion.div>
