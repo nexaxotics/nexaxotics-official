@@ -49,7 +49,7 @@ export default function Footer() {
                             </div>
                         </div>
                         <p className="text-[9px] text-muted-foreground max-w-xs text-center md:text-right leading-relaxed">
-                            NEXAXOTICS is not affiliated with Make.com. We are a specialized infrastructure agency building custom solutions for service providers.
+                            NEXAXOTICS are a specialized infrastructure agency building custom solutions for service providers.
                         </p>
                     </div>
                 </div>
