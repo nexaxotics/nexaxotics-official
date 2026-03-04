@@ -64,8 +64,8 @@ const PricingCard: React.FC<PricingCardProps> = ({
                 ))}
             </ul>
 
-            <Link href={link} className='w-full mt-auto'>
-                <button className={styles.button}>{buttonText}</button>
+            <Link href={link} className={`${styles.button} w-full mt-auto`}>
+                {buttonText}
             </Link>
         </div>
     );

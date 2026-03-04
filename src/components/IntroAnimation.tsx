@@ -64,6 +64,9 @@ export default function IntroAnimation({ children }: { children: React.ReactNode
             };
         } else {
             window.removeEventListener('resize', updateTargetPos);
+            return () => {
+                window.removeEventListener('resize', updateTargetPos);
+            };
         }
     }, []);
 

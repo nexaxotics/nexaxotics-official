@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export default function CustomCursor() {
     const [isVisible, setIsVisible] = useState(false);
+    const hasBeenVisible = useRef(false);
     const cursorX = useMotionValue(-100);
     const cursorY = useMotionValue(-100);
     const [isHovering, setIsHovering] = useState(false);
@@ -22,7 +23,10 @@ export default function CustomCursor() {
         const moveCursor = (e: MouseEvent) => {
             cursorX.set(e.clientX - 16); // Center the 32px ring
             cursorY.set(e.clientY - 16);
-            if (!isVisible) setIsVisible(true);
+            if (!hasBeenVisible.current) {
+                hasBeenVisible.current = true;
+                setIsVisible(true);
+            }
         };
 
         const handleMouseDown = () => setIsClicking(true);
@@ -72,7 +76,7 @@ export default function CustomCursor() {
                     animate={{
                         scale: isHovering ? 1.5 : (isClicking ? 0.8 : 1),
                         opacity: isHovering ? 1 : 0.5,
-                        borderColor: isHovering ? "hsl(var(--primary))" : "rgba(100, 100, 100, 0.4)",
+                        borderColor: isHovering ? "#00d4ff" : "rgba(100, 100, 100, 0.4)",
                         borderWidth: isHovering ? "2px" : "1px",
                     }}
                 />

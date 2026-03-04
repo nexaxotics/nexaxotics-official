@@ -266,6 +266,7 @@ export const translations = {
 
         'systems.whatItDoes': 'Goal',
         'systems.whatYouGet': 'Includes',
+        'systems.architectureDesc': 'Detailed breakdown of the architecture.',
 
         // How It Works Page
         'howItWorks.title1': 'Process',
@@ -323,6 +324,23 @@ export const translations = {
         // Footer
         'footer.tagline': 'Customer Acquisition Infrastructure for Small Businesses.',
         'footer.rights': 'Systems Active.',
+
+        // FAQ
+        'faq.badge': 'Common Questions',
+        'faq.title': 'Everything you ',
+        'faq.titleAccent': 'need to know',
+        'faq.q1': 'What exactly is a customer acquisition system?',
+        'faq.a1': 'It\'s a fully automated pipeline — ads, landing pages, lead capture, nurture sequences, CRM, and booking — all connected and running 24/7. You stop chasing leads; the system does it for you.',
+        'faq.q2': 'Do I need to run ads for this to work?',
+        'faq.a2': 'Not necessarily. Some of our systems work entirely on organic reach, WhatsApp re-activation, and referral loops. If you do run ads, we make sure every rupee is tracked to an actual booking or sale.',
+        'faq.q3': 'How long until I see results?',
+        'faq.a3': 'Most clients see their first automated leads within 2–4 weeks of going live. Full system ROI — where the revenue eclipses the monthly fee — typically happens within 60–90 days.',
+        'faq.q4': 'Is this only for certain industries?',
+        'faq.a4': 'No. We work with clinics, gyms, real estate agents, coaches, e-commerce brands, and local service businesses. If you have a sales process, we can automate it.',
+        'faq.q5': 'What makes NEXAXOTICS different from a regular agency?',
+        'faq.a5': 'A regular agency gives you deliverables (posts, ads, reports). We give you infrastructure. The system we build keeps working after we\'re done — you own the pipeline, the CRM, the automations.',
+        'faq.q6': 'What happens on the free audit call?',
+        'faq.a6': 'We analyze your current lead flow, identify the biggest gaps, and map out a concrete system design specific to your business. You leave with an actionable blueprint — no pitch, no pressure.',
     },
     hi: {
         // Header
@@ -585,6 +603,7 @@ export const translations = {
         'systems.content.benefit3': 'अथॉरिटी बिल्डिंग',
         'systems.whatItDoes': 'यह क्या करता है',
         'systems.whatYouGet': 'आपको क्या मिलता है',
+        'systems.architectureDesc': 'आर्किटेक्चर का विस्तृत विवरण।',
 
         // How It Works Page
         'howItWorks.title1': 'NEXAXOTICS',
@@ -642,6 +661,23 @@ export const translations = {
         // Footer
         'footer.tagline': 'ग्राहक प्राप्ति सिस्टम बना रहे हैं जो ट्रैफिक को राजस्व में बदलते हैं।',
         'footer.rights': 'सर्वाधिकार सुरक्षित।',
+
+        // FAQ
+        'faq.badge': 'सामान्य प्रश्न',
+        'faq.title': 'सब कुछ जो आपको ',
+        'faq.titleAccent': 'जानना चाहिए',
+        'faq.q1': 'ग्राहक अधिग्रहण सिस्टम वास्तव में क्या है?',
+        'faq.a1': 'यह एक पूरी तरह से स्वचालित पाइपलाइन है — विज्ञापन, लैंडिंग पेज, लीड कैप्चर, नर्चर सीक्वेंस, CRM और बुकिंग — सब कुछ जुड़ा हुआ और 24/7 चलता रहता है।',
+        'faq.q2': 'क्या इसके लिए विज्ञापन चलाना जरूरी है?',
+        'faq.a2': 'जरूरी नहीं। कुछ सिस्टम पूरी तरह ऑर्गेनिक रीच, WhatsApp री-एक्टिवेशन और रेफरल लूप पर काम करते हैं।',
+        'faq.q3': 'परिणाम देखने में कितना समय लगता है?',
+        'faq.a3': 'अधिकांश ग्राहकों को 2–4 हफ्तों में पहला ऑटोमेटेड लीड मिलता है। पूर्ण ROI 60–90 दिनों में।',
+        'faq.q4': 'क्या यह सिर्फ कुछ उद्योगों के लिए है?',
+        'faq.a4': 'नहीं। हम क्लीनिक, जिम, रियल एस्टेट, कोच, ई-कॉमर्स और सर्विस बिजनेस के साथ काम करते हैं।',
+        'faq.q5': 'NEXAXOTICS एक सामान्य एजेंसी से अलग कैसे है?',
+        'faq.a5': 'सामान्य एजेंसी डिलिवरेबल्स देती है। हम इन्फ्रास्ट्रक्चर देते हैं — CRM, ऑटोमेशन और पाइपलाइन जो आपके पास रहती है।',
+        'faq.q6': 'मुफ्त ऑडिट कॉल में क्या होता है?',
+        'faq.a6': 'हम आपके लीड फ्लो का विश्लेषण करते हैं, सबसे बड़े गैप खोजते हैं और आपके बिजनेस के लिए एक ठोस सिस्टम ब्लूप्रिंट तैयार करते हैं।',
     }
 };
 

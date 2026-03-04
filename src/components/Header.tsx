@@ -2,6 +2,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { useState } from "react";
@@ -20,6 +21,13 @@ export default function Header() {
 
     const isCompact = isScrolled && !isHovered && !isMobileMenuOpen;
 
+    const navTransition = {
+        type: "spring" as const,
+        stiffness: 300,
+        damping: 30,
+        borderRadius: { type: "tween" as const, duration: 0.25, ease: "easeInOut" as const },
+    };
+
     return (
         <motion.header
             className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-6xl px-4"
@@ -27,19 +35,20 @@ export default function Header() {
             onMouseLeave={() => setIsHovered(false)}
         >
             <motion.div
-                className="glass-morphe rounded-full mx-auto overflow-hidden relative"
+                className="glass-morphe mx-auto overflow-hidden relative"
                 initial={false}
                 animate={{
                     width: isCompact ? "auto" : "100%",
                     padding: isCompact ? "0.5rem 1rem" : "0.75rem 2rem",
+                    borderRadius: isMobileMenuOpen ? "1.5rem" : "9999px",
                 }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                transition={navTransition}
             >
                 <div className="flex items-center justify-between gap-4">
                     {/* Logo - Made Visible */}
-                    <Link href="#" className="flex items-center gap-2 group shrink-0 pointer-events-auto">
+                    <Link href="/" className="flex items-center gap-2 group shrink-0 pointer-events-auto">
                         <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center border border-primary/20">
-                            <img src="/logo.png" alt="NEXA" className="w-6 h-6 object-contain invert hue-rotate-180" />
+                            <Image src="/logo.png" alt="NEXA" width={24} height={24} style={{ width: 24, height: 'auto' }} className="object-contain invert hue-rotate-180" />
                         </div>
                         <span className="font-heading font-black text-xl tracking-tight hidden sm:block">NEXA<span className="text-primary">XOTICS</span></span>
                     </Link>
@@ -49,7 +58,8 @@ export default function Header() {
                         className="hidden lg:flex items-center gap-1 overflow-hidden"
                         animate={{
                             width: isCompact ? 0 : "auto",
-                            opacity: isCompact ? 0 : 1
+                            opacity: isCompact ? 0 : 1,
+                            pointerEvents: isCompact ? "none" : "auto"
                         }}
                     >
                         <Link href="#how-it-works" className="px-4 py-1.5 text-sm font-heading font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">{t('header.howItWorks')}</Link>
@@ -62,6 +72,8 @@ export default function Header() {
                     <div className="flex items-center gap-3 shrink-0">
                         <motion.button
                             onClick={toggleLanguage}
+                            aria-label="Toggle language"
+                            title={language === 'en' ? 'Switch to Hindi' : 'Switch to English'}
                             className="text-xs font-bold w-8 h-8 rounded-full border border-neutral-200 flex items-center justify-center hover:bg-neutral-100 transition-colors text-foreground"
                             animate={{ scale: isCompact ? 0.8 : 1 }}
                         >

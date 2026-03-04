@@ -1,12 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Interactive3DCard from "@/components/Interactive3DCard";
 import PricingCard from "@/components/PricingCard";
+import FAQAccordion from "@/components/FAQAccordion";
 import { supabase } from '@/lib/supabase';
 import {
     Zap,
@@ -14,8 +14,6 @@ import {
     Users,
     ArrowRight,
     CheckCircle2,
-    BarChart3,
-    Workflow,
     Star,
     Quote,
     Rocket,
@@ -36,25 +34,11 @@ import {
     Search,
     Send,
     Loader2,
-    CheckCircle,
     X
 } from "lucide-react";
 
 export default function Home() {
     const { t, language } = useLanguage();
-    const heroRef = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: heroRef,
-        offset: ["start start", "end start"]
-    });
-
-    const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-    const textY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-
-    // Trust Logos
-    const trustLogos = [
-        "Apex Labs", "CloudScale", "Visionary AI", "TechFlow", "GlobalSync", "Nova Systems"
-    ];
 
     // Systems Data
     const systems = [
@@ -211,7 +195,7 @@ export default function Home() {
             features: [t('industries.coaching.feat1'), t('industries.coaching.feat2'), t('industries.coaching.feat3')]
         },
         {
-            icon: <Users className="w-8 h-8" />,
+            icon: <GraduationCap className="w-8 h-8" />,
             name: t('industries.education'),
             benefit: t('industries.educationBenefit'),
             details: t('industries.education.details'),
@@ -247,14 +231,14 @@ export default function Home() {
         { icon: <PhoneCall className="w-6 h-6" />, label: t('howItWorks.step3.label'), desc: t('howItWorks.step3.desc') },
         { icon: <Bot className="w-6 h-6" />, label: t('howItWorks.step4.label'), desc: t('howItWorks.step4.desc') },
         { icon: <Repeat className="w-6 h-6" />, label: t('howItWorks.step5.label'), desc: t('howItWorks.step5.desc') },
-        { icon: <CheckCircle className="w-6 h-6" />, label: t('howItWorks.step6.label'), desc: t('howItWorks.step6.desc') },
+        { icon: <CheckCircle2 className="w-6 h-6" />, label: t('howItWorks.step6.label'), desc: t('howItWorks.step6.desc') },
         { icon: <Share2 className="w-6 h-6" />, label: t('howItWorks.step7.label'), desc: t('howItWorks.step7.desc') },
     ];
 
     // Contact Logic
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
+    const [error, setError] = useState<string>("");
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -263,12 +247,12 @@ export default function Home() {
 
         const formData = new FormData(e.currentTarget);
 
-        // Data object mirroring the Supabase schema from the guide
+        // Data object mirroring the Supabase schema
         const leadData = {
             name: "Prospect", // Default name as form has no name field yet
-            business_name: formData.get("business") as string,
+            business: formData.get("business") as string,
             city: formData.get("city") as string,
-            phone: formData.get("whatsapp") as string, // Mapping whatsapp to phone
+            whatsapp: formData.get("whatsapp") as string,
             budget: formData.get("budget") as string,
             source: 'Main Website',
             status: 'new'
@@ -281,9 +265,9 @@ export default function Home() {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        business: leadData.business_name,
+                        business: leadData.business,
                         city: leadData.city,
-                        whatsapp: leadData.phone,
+                        whatsapp: leadData.whatsapp,
                         budget: leadData.budget
                     }),
                 });
@@ -318,142 +302,236 @@ export default function Home() {
 
     const reviews = [
         {
-            name: "Sarah Jenkins",
-            role: "CEO, TechBloom",
-            content: "NEXAXOTICS transformed how we handle customer data. The automation is flawless.",
+            name: "Vishwakarma Honda",
+            role: "Honda Two-Wheeler Showroom",
+            content: "Footfall was inconsistent before NEXAXOTICS. They built us a WhatsApp follow-up system and local ads pipeline — our test ride bookings went up significantly within the first month.",
             avatar: "/avatars/user1.png"
         },
         {
-            name: "David Chen",
-            role: "Founder, ScaleUp",
-            content: "We saved 20+ hours a week on manual tasks. Worth every penny of the setup.",
+            name: "Bajaj Showroom",
+            role: "Bajaj Authorised Dealer",
+            content: "We had hundreds of old enquiries sitting idle. Their lead recovery system re-activated those contacts and converted a good chunk into actual walk-ins. Genuinely surprised by the ROI.",
             avatar: "/avatars/user2.png"
         },
         {
-            name: "Elena Rodriguez",
-            role: "Ops Director, CloudNine",
-            content: "The most reliable automation system we've integrated in 5 years.",
+            name: "Hero Showroom",
+            role: "Hero MotoCorp Dealership",
+            content: "The automated enquiry capture and CRM pipeline they set up saves our sales team hours every week. Follow-ups happen automatically — we just close the deals.",
             avatar: "/avatars/user3.png"
         }
     ];
 
     return (
-        <div className="relative min-h-screen bg-background overflow-hidden bg-make-gradient">
-            {/* Parallax Hero Background */}
-            <motion.div
-                style={{ y: backgroundY }}
-                className="absolute top-0 left-0 w-full h-[120vh] opacity-30 pointer-events-none z-0"
-            >
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-white z-10" />
-                <Image
-                    src="/hero-new.png"
-                    alt="Cyber Background"
-                    fill
-                    className="object-cover"
-                    priority
-                />
-            </motion.div>
+        <div className="relative min-h-screen bg-background overflow-hidden">
 
-            {/* Circuit Pattern Sub-layer */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1200px] opacity-10 pointer-events-none">
-                <Image
-                    src="/circuit-pattern.png"
-                    alt="Circuit Background"
-                    fill
-                    className="object-cover"
-                />
+            {/* ── HERO BACKGROUND ─────────────────────────────── */}
+            {/* Base gradient wash */}
+            <div
+                className="absolute inset-0 z-0 pointer-events-none"
+                aria-hidden="true"
+                style={{
+                    background: "linear-gradient(135deg, hsl(222 50% 5%) 0%, hsl(240 45% 8%) 50%, hsl(222 50% 4%) 100%)"
+                }}
+            />
+            {/* Fine grid overlay */}
+            <div className="absolute inset-0 z-0 hero-grid pointer-events-none opacity-60" aria-hidden="true" />
+            {/* Animated orbs */}
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+                <div className="orb-primary absolute -top-40 -left-40 w-[700px] h-[700px] rounded-full"
+                    style={{ background: "radial-gradient(circle, rgba(0,191,255,0.18) 0%, transparent 70%)" }} />
+                <div className="orb-secondary absolute top-20 right-[-200px] w-[600px] h-[600px] rounded-full"
+                    style={{ background: "radial-gradient(circle, rgba(127,90,240,0.14) 0%, transparent 70%)" }} />
+                <div className="orb-accent absolute bottom-0 left-1/3 w-[500px] h-[500px] rounded-full"
+                    style={{ background: "radial-gradient(circle, rgba(0,215,255,0.10) 0%, transparent 70%)" }} />
             </div>
+            {/* Fade bottom to body bg */}
+            <div className="absolute bottom-0 left-0 w-full h-48 z-0 pointer-events-none"
+                style={{ background: "linear-gradient(to bottom, transparent, hsl(222 50% 5%))" }}
+                aria-hidden="true"
+            />
 
-            {/* Hero Section */}
-            <section ref={heroRef} className="relative pt-52 pb-40 px-6 z-20">
-                <div className="container mx-auto text-center max-w-5xl">
-                    <motion.div
-                        style={{ y: textY }}
-                    >
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-black/10 mb-8"
-                        >
-                            <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                            <span className="text-xs font-bold uppercase tracking-widest text-primary">{t('header.badge')}</span>
-                        </motion.div>
+            {/* ── HERO SECTION ────────────────────────────────── */}
+            <section style={{ position: 'relative' }} className="relative pt-36 pb-24 px-6 z-20">
+                <div className="container mx-auto max-w-7xl">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
-                        <motion.h1
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 }}
-                            className="text-5xl md:text-8xl font-heading font-bold mb-8 leading-[1] tracking-tight"
-                        >
-                            {t('home.hero.title1')} <br />
-                            <span className="text-gradient">{t('home.hero.title2')}</span>
-                        </motion.h1>
+                        {/* LEFT — Copy */}
+                        <motion.div className="flex flex-col items-start text-left">
 
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                            className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed"
-                        >
-                            NEXAXOTICS builds the technical infrastructure that scales your service business.
-                            Don't just run ads—build a customer acquisition machine.
-                        </motion.p>
-
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3 }}
-                            className="flex flex-wrap justify-center gap-4"
-                        >
-                            <Link href="#contact" className="px-10 py-4 bg-primary text-white rounded-full font-bold text-base shadow-brand-glow hover:scale-105 transition-all outline-none">
-                                Get My Growth Plan
-                            </Link>
-                            <Link href="#how-it-works" className="px-10 py-4 glass text-secondary rounded-full font-bold text-base hover:bg-black/5 transition-all">
-                                How it Works
-                            </Link>
-                        </motion.div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* Trust Section */}
-            <section className="py-20 border-y border-black/5 bg-[#3A8E8A]/10 relative z-10 overflow-hidden">
-                <div className="container mx-auto px-6 mb-12">
-                    <p className="text-center text-[10px] uppercase tracking-[0.3em] font-bold text-muted-foreground">
-                        Trusted by industry leaders worldwide
-                    </p>
-                </div>
-
-                <div className="relative flex overflow-x-hidden group">
-                    <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-                    <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-
-                    <motion.div
-                        className="flex gap-20 py-4 items-center whitespace-nowrap"
-                        animate={{ x: ["0%", "-50%"] }}
-                        transition={{
-                            repeat: Infinity,
-                            ease: "linear",
-                            duration: 30
-                        }}
-                    >
-                        {[...trustLogos, ...trustLogos, ...trustLogos, ...trustLogos].map((logo, i) => (
-                            <span
-                                key={i}
-                                className="text-4xl md:text-5xl font-black tracking-tighter opacity-30 grayscale hover:grayscale-0 hover:opacity-80 transition-all duration-500 cursor-pointer"
+                            {/* Status badge */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 16 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5 }}
+                                className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.08] border border-primary/30 backdrop-blur-sm shadow-trust-glow mb-8"
                             >
-                                {logo}
-                            </span>
-                        ))}
-                    </motion.div>
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                                    <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+                                </span>
+                                <span className="text-[10px] font-black uppercase tracking-[0.25em] text-primary">{t('header.badge')}</span>
+                            </motion.div>
+
+                            {/* Headline */}
+                            <motion.h1
+                                className="font-heading font-black leading-[0.95] tracking-tight mb-7"
+                                style={{ fontSize: "clamp(2.4rem, 5vw, 4.6rem)" }}
+                            >
+                                {t('home.hero.title1').split(" ").map((word, i) => (
+                                    <motion.span
+                                        key={i}
+                                        initial={{ opacity: 0, y: 30 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.05 + i * 0.07, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                        className="inline-block mr-[0.25em]"
+                                    >
+                                        {word}
+                                    </motion.span>
+                                ))}
+                                <br />
+                                <motion.span
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.35, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                                    className="text-gradient inline-block"
+                                >
+                                    {t('home.hero.title2')}
+                                </motion.span>
+                            </motion.h1>
+
+                            {/* Subtitle */}
+                            <motion.p
+                                initial={{ opacity: 0, y: 16 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.45, duration: 0.5 }}
+                                className="text-lg text-muted-foreground mb-10 max-w-lg leading-relaxed"
+                            >
+                                {t('home.hero.subtitle')}
+                            </motion.p>
+
+                            {/* CTAs */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 16 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.55, duration: 0.5 }}
+                                className="flex flex-wrap gap-4 mb-12"
+                            >
+                                <Link
+                                    href="#contact"
+                                    className="group relative inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-full font-bold text-base shadow-brand-glow hover:shadow-brand-glow-lg hover:scale-105 transition-all focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 outline-none overflow-hidden"
+                                >
+                                    <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 rounded-full" />
+                                    <span className="relative">{t('home.hero.cta1')}</span>
+                                    <ArrowRight className="relative w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                </Link>
+                                <Link
+                                    href="#how-it-works"
+                                    className="inline-flex items-center gap-2 px-8 py-4 bg-white/[0.07] backdrop-blur border border-white/15 text-foreground rounded-full font-bold text-base hover:bg-white/15 hover:border-primary/40 transition-all"
+                                >
+                                    {t('home.hero.cta2')}
+                                </Link>
+                            </motion.div>
+
+                            {/* Trust micro-stats */}
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.7 }}
+                                className="flex flex-wrap items-center gap-x-8 gap-y-3"
+                            >
+                                {[
+                                    { value: "300%", label: t('home.hero.revenueEfficiency') },
+                                    { value: "70%", label: t('home.hero.manualManagement') },
+                                    { value: "10d", label: "Avg. Setup" },
+                                ].map((stat) => (
+                                    <div key={stat.label} className="flex items-center gap-2">
+                                        <span className="text-xl font-black text-foreground">{stat.value}</span>
+                                        <span className="text-xs text-muted-foreground font-medium">{stat.label}</span>
+                                    </div>
+                                ))}
+                            </motion.div>
+                        </motion.div>
+
+                        {/* RIGHT — Live metrics panel */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 40 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                            className="relative hidden lg:block"
+                        >
+                            {/* Glow behind the card */}
+                            <div className="absolute inset-0 bg-primary/15 blur-[80px] rounded-[3rem] scale-90" />
+
+                            <div className="relative bg-white/[0.06] backdrop-blur-xl border border-white/[0.1] rounded-[2.5rem] p-8 shadow-2xl shadow-black/60">
+                                {/* Card header */}
+                                <div className="flex items-center justify-between mb-8">
+                                    <div>
+                                        <p className="text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground">{t('home.hero.systemHealth')}</p>
+                                        <p className="text-lg font-black text-foreground mt-0.5">System Dashboard</p>
+                                    </div>
+                                    <div className="flex items-center gap-2 px-3 py-1.5 bg-green-500/[0.12] border border-green-500/25 rounded-full">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                                        <span className="text-[10px] font-black uppercase tracking-wider text-green-400">{t('home.hero.stable')}</span>
+                                    </div>
+                                </div>
+
+                                {/* Metric rows */}
+                                <div className="space-y-4 mb-8">
+                                    {[
+                                        { label: t('home.hero.leadRecovery'), value: "94%", bar: 94, color: "bg-primary" },
+                                        { label: t('home.hero.revenueEfficiency'), value: "3.2x", bar: 75, color: "bg-secondary" },
+                                        { label: t('home.hero.manualManagement'), value: "↓ 70%", bar: 30, color: "bg-green-500" },
+                                    ].map((m) => (
+                                        <div key={m.label}>
+                                            <div className="flex justify-between items-center mb-1.5">
+                                                <span className="text-xs font-bold text-muted-foreground">{m.label}</span>
+                                                <span className="text-sm font-black text-foreground">{m.value}</span>
+                                            </div>
+                                            <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                                                <motion.div
+                                                    className={`h-full ${m.color} rounded-full`}
+                                                    initial={{ width: 0 }}
+                                                    animate={{ width: `${m.bar}%` }}
+                                                    transition={{ delay: 0.8, duration: 1.2, ease: "easeOut" }}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* Recent activity feed */}
+                                <div className="space-y-2.5">
+                                    <p className="text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground mb-3">Recent Activity</p>
+                                    {[
+                                        { icon: "💬", text: "New lead captured — Mumbai", time: "2m ago" },
+                                        { icon: "📅", text: "Appointment booked — Dental", time: "5m ago" },
+                                        { icon: "⭐", text: "Review collected — 5 stars", time: "12m ago" },
+                                    ].map((a, i) => (
+                                        <motion.div
+                                            key={i}
+                                            initial={{ opacity: 0, x: 10 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: 1 + i * 0.15 }}
+                                            className="flex items-center gap-3 p-2 rounded-xl bg-white/[0.06] border border-white/[0.08]"
+                                        >
+                                            <span className="text-base">{a.icon}</span>
+                                            <span className="text-xs font-medium text-foreground flex-1 truncate">{a.text}</span>
+                                            <span className="text-[10px] text-muted-foreground shrink-0">{a.time}</span>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </div>
+                        </motion.div>
+
+                    </div>
                 </div>
             </section>
 
             {/* REALITY CHECK SECTION (PROBLEM) */}
-            <section className="py-24 px-6 relative z-10 bg-neutral-50 border-y border-neutral-200">
-                <div className="container mx-auto max-w-6xl">
+            <section className="py-24 px-6 relative z-10 border-y border-white/[0.06]">
+                <div className="container mx-auto max-w-5xl">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-heading font-black mb-6">
+                        <h2 className="text-3xl md:text-4xl font-heading font-black mb-6">
                             {t('home.problem.title1')} <span className="text-primary">{t('home.problem.title2')}</span>
                         </h2>
                         <p className="text-xl font-medium italic text-muted-foreground">
@@ -461,29 +539,29 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Old Model */}
-                        <div className="p-8 rounded-3xl bg-white border border-neutral-200 shadow-sm relative overflow-hidden group hover:border-red-200 transition-colors">
+                        <div className="p-8 rounded-3xl bg-white/[0.04] border border-white/[0.08] relative overflow-hidden group hover:border-red-500/20 transition-colors">
                             <div className="absolute top-0 right-0 p-4 opacity-10">
                                 <ShieldCheck className="w-24 h-24 text-red-500" />
                             </div>
-                            <h3 className="text-2xl font-bold mb-4 text-neutral-400">{t('home.problem.agencyTitle')}</h3>
-                            <p className="text-lg text-neutral-500 mb-6 leading-relaxed">
+                            <h3 className="text-2xl font-bold mb-4 text-foreground/55">{t('home.problem.agencyTitle')}</h3>
+                            <p className="text-base text-muted-foreground mb-6 leading-relaxed">
                                 {t('home.problem.agencyDesc')}
                             </p>
                             <div className="flex gap-2">
-                                <span className="px-3 py-1 rounded-full bg-red-50 text-red-500 text-xs font-bold uppercase tracking-wider">High Risk</span>
-                                <span className="px-3 py-1 rounded-full bg-red-50 text-red-500 text-xs font-bold uppercase tracking-wider">Manual</span>
+                                <span className="px-3 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-bold uppercase tracking-wider">High Risk</span>
+                                <span className="px-3 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-bold uppercase tracking-wider">Manual</span>
                             </div>
                         </div>
 
                         {/* New Standard */}
-                        <div className="p-8 rounded-3xl bg-white border-2 border-primary/20 shadow-brand-glow relative overflow-hidden">
+                        <div className="p-8 rounded-3xl bg-primary/[0.06] border-2 border-primary/30 shadow-brand-glow relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-4 opacity-10">
                                 <Rocket className="w-24 h-24 text-primary" />
                             </div>
                             <h3 className="text-2xl font-bold mb-4 text-foreground">{t('home.problem.businessTitle')}</h3>
-                            <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                            <p className="text-base text-muted-foreground mb-6 leading-relaxed">
                                 {t('home.problem.businessDesc')}
                             </p>
                             <div className="flex gap-2">
@@ -496,9 +574,9 @@ export default function Home() {
             </section>
 
             {/* SYSTEMS SECTION */}
-            <section id="systems" className="py-32 px-6 relative z-10">
-                <div className="container mx-auto">
-                    <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+            <section id="systems" className="py-24 px-6 relative z-10">
+                <div className="container mx-auto max-w-7xl px-6">
+                    <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
                         <motion.div
                             initial={{ opacity: 0, x: -30 }}
                             whileInView={{ opacity: 1, x: 0 }}
@@ -506,39 +584,53 @@ export default function Home() {
                             className="max-w-xl"
                         >
                             <span className="trust-badge mb-4 inline-block">{t('systems.title1')}</span>
-                            <h2 className="text-4xl md:text-5xl font-heading font-black mb-6">{t('systems.title2')} <span className="text-primary">{t('systems.subtitle')}</span></h2>
-                            <p className="text-muted-foreground text-lg">Detailed Breakdown of the Architecture.</p>
+                    <h2 className="text-4xl md:text-5xl font-heading font-black mb-6">{t('systems.title2')} <span className="text-primary">{t('systems.subtitle')}</span></h2>
+                            <p className="text-muted-foreground text-lg">{t('systems.architectureDesc')}</p>
                         </motion.div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {systems.map((sys, i) => (
                             <div key={i} className="h-full">
                                 <Interactive3DCard
                                     height="100%"
-                                    className="border-neutral-200 bg-white/50"
+                                    className=""
                                 >
                                     <div className="flex flex-col h-full">
                                         {/* Icon Header */}
                                         <div className="flex items-start justify-between mb-8">
-                                            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center text-primary border border-primary/10 shadow-sm">
+                                            <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-primary"
+                                                style={{
+                                                    background: 'rgba(0,212,255,0.08)',
+                                                    backdropFilter: 'blur(8px)',
+                                                    border: '1px solid rgba(0,212,255,0.18)',
+                                                }}>
                                                 {sys.icon}
                                             </div>
-                                            <div className="px-3 py-1 bg-neutral-100 rounded-full text-[10px] font-bold uppercase tracking-widest text-neutral-500">
+                                            <div className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-muted-foreground"
+                                                style={{
+                                                    background: 'rgba(255,255,255,0.06)',
+                                                    border: '1px solid rgba(255,255,255,0.10)',
+                                                }}>
                                                 Module 0{i + 1}
                                             </div>
                                         </div>
 
-                                        <h3 className="text-2xl font-bold mb-4 text-foreground">{sys.title}</h3>
+                                        <h3 className="text-2xl font-bold mb-3 text-foreground">{sys.title}</h3>
                                         <p className="text-muted-foreground text-base leading-relaxed mb-8">{sys.does}</p>
 
                                         {/* Benefits List */}
-                                        <div className="mt-auto space-y-4 pt-8 border-t border-neutral-100">
-                                            <span className="text-xs font-bold uppercase tracking-widest text-primary block mb-2">{t('systems.whatYouGet')}</span>
-                                            <p className="text-sm font-medium text-foreground mb-4">{sys.gets}</p>
+                                        <div className="mt-auto pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+                                            <span className="text-xs font-bold uppercase tracking-widest text-primary block mb-3">{t('systems.whatYouGet')}</span>
+                                            <p className="text-sm font-medium text-foreground/80 mb-4">{sys.gets}</p>
                                             <div className="grid grid-cols-1 gap-2">
                                                 {sys.benefits.map((b, j) => (
-                                                    <div key={j} className="flex items-center gap-3 text-sm text-muted-foreground bg-white/50 p-2 rounded-lg border border-neutral-100/50">
+                                                    <div key={j} className="flex items-center gap-3 text-sm text-muted-foreground rounded-xl px-3 py-2"
+                                                        style={{
+                                                            background: 'rgba(255,255,255,0.04)',
+                                                            border: '1px solid rgba(255,255,255,0.07)',
+                                                            backdropFilter: 'blur(8px)',
+                                                        }}>
                                                         <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
                                                         {b}
                                                     </div>
@@ -554,17 +646,17 @@ export default function Home() {
             </section>
 
             {/* INDUSTRIES SECTION */}
-            <section id="industries" className="py-24 relative z-10 bg-white shadow-sm border-y border-neutral-100">
-                <div className="container mx-auto px-4">
-                    <div className="max-w-3xl mb-24 text-center mx-auto">
+            <section id="industries" className="py-24 px-6 relative z-10 border-y border-white/[0.06]">
+                <div className="container mx-auto max-w-7xl px-6">
+                    <div className="max-w-2xl mb-16 text-center mx-auto">
                         <span className="trust-badge mb-4 inline-block">{t('industries.title1')}</span>
-                        <h2 className="text-5xl md:text-7xl font-heading font-bold mb-8 leading-tight text-foreground">
+                        <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6 leading-tight text-foreground">
                             {t('industries.title2')}
                         </h2>
-                        <p className="text-xl text-muted-foreground">{t('industries.subtitle')}</p>
+                        <p className="text-lg text-muted-foreground">{t('industries.subtitle')}</p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
                         {industries.map((ind, i) => (
                             <motion.div
                                 key={i}
@@ -572,8 +664,8 @@ export default function Home() {
                                 whileHover={{ y: -5 }}
                                 onClick={() => setSelectedIndustry(ind)}
                             >
-                                <div className="p-8 rounded-[2rem] bg-neutral-50 border border-neutral-100 hover:border-primary/30 hover:shadow-brand-glow transition-all duration-300 h-full flex flex-col items-center text-center">
-                                    <div className="w-20 h-20 rounded-2xl bg-white border border-neutral-200 flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                                <div className="p-7 rounded-[1.75rem] bg-white/[0.04] border border-white/[0.08] hover:border-primary/30 hover:shadow-brand-glow transition-all duration-300 h-full flex flex-col items-center text-center">
+                                    <div className="w-20 h-20 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
                                         {ind.icon}
                                     </div>
                                     <h3 className="text-2xl font-bold mb-3">{ind.name}</h3>
@@ -599,11 +691,12 @@ export default function Home() {
                                     initial={{ opacity: 0, scale: 0.9, y: 20 }}
                                     animate={{ opacity: 1, scale: 1, y: 0 }}
                                     exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                                    className="relative w-full max-w-2xl bg-white rounded-[3rem] shadow-2xl overflow-hidden border border-neutral-200"
+                                    className="relative w-full max-w-2xl bg-[#0c1022] rounded-[3rem] shadow-2xl overflow-hidden border border-white/[0.12]"
                                 >
                                     <button
                                         onClick={() => setSelectedIndustry(null)}
-                                        className="absolute top-8 right-8 w-12 h-12 rounded-full bg-neutral-100 flex items-center justify-center hover:bg-neutral-200 transition-colors z-20"
+                                        aria-label="Close"
+                                        className="absolute top-8 right-8 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors z-20"
                                     >
                                         <X className="w-6 h-6" />
                                     </button>
@@ -620,28 +713,28 @@ export default function Home() {
                                                 </div>
                                             </div>
                                             <div className="md:text-right w-full md:w-auto">
-                                                <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-tighter block mb-1">Target Outcome</span>
+                                                <span className="text-[10px] font-bold text-foreground/45 uppercase tracking-tighter block mb-1">Target Outcome</span>
                                                 <div className="px-4 py-2 bg-primary/5 border border-primary/10 rounded-xl inline-block">
                                                     <span className="text-primary font-black text-lg">{selectedIndustry.impact}</span>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <p className="text-lg md:text-xl text-neutral-600 mb-8 leading-relaxed">
+                                        <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
                                             {selectedIndustry.details}
                                         </p>
 
                                         {/* Snapshot Row */}
                                         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-10">
-                                            <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 text-center">
-                                                <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest block mb-1">{t('industries.modal.replaces')}</span>
-                                                <span className="text-sm font-black text-neutral-800">{selectedIndustry.replaces}</span>
+                                            <div className="p-4 rounded-2xl bg-white/[0.05] border border-white/[0.08] text-center">
+                                                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block mb-1">{t('industries.modal.replaces')}</span>
+                                                <span className="text-sm font-black text-foreground">{selectedIndustry.replaces}</span>
                                             </div>
-                                            <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 text-center">
-                                                <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest block mb-1">{t('industries.modal.setup')}</span>
-                                                <span className="text-sm font-black text-neutral-800">{selectedIndustry.setup}</span>
+                                            <div className="p-4 rounded-2xl bg-white/[0.05] border border-white/[0.08] text-center">
+                                                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block mb-1">{t('industries.modal.setup')}</span>
+                                                <span className="text-sm font-black text-foreground">{selectedIndustry.setup}</span>
                                             </div>
-                                            <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10 text-center col-span-2 md:col-span-1">
+                                            <div className="p-4 rounded-2xl bg-primary/10 border border-primary/20 text-center col-span-2 md:col-span-1">
                                                 <span className="text-[10px] font-bold text-primary uppercase tracking-widest block mb-1">{t('industries.modal.results')}</span>
                                                 <span className="text-sm font-black text-primary">{selectedIndustry.roi}</span>
                                             </div>
@@ -649,34 +742,34 @@ export default function Home() {
 
                                         {/* Problem vs Solution */}
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                                            <div className="p-6 rounded-2xl bg-red-50/50 border border-red-100 italic relative overflow-hidden">
+                                            <div className="p-6 rounded-2xl bg-red-950/30 border border-red-900/30 italic relative overflow-hidden">
                                                 <div className="absolute top-0 right-0 w-16 h-16 bg-red-500/5 -translate-y-1/2 translate-x-1/2 rounded-full" />
-                                                <div className="flex items-center gap-2 mb-3 text-red-600">
-                                                    <div className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
+                                                <div className="flex items-center gap-2 mb-3 text-red-400">
+                                                    <div className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
                                                     <span className="text-xs font-black uppercase tracking-widest">Pain Point</span>
                                                 </div>
-                                                <p className="text-sm text-neutral-600 leading-relaxed font-medium">"{selectedIndustry.problem}"</p>
+                                                <p className="text-sm text-foreground/70 leading-relaxed font-medium">"{selectedIndustry.problem}"</p>
                                             </div>
-                                            <div className="p-6 rounded-2xl bg-green-50/50 border border-green-100 relative overflow-hidden">
+                                            <div className="p-6 rounded-2xl bg-green-950/20 border border-green-900/25 relative overflow-hidden">
                                                 <div className="absolute top-0 right-0 w-16 h-16 bg-green-500/5 -translate-y-1/2 translate-x-1/2 rounded-full" />
-                                                <div className="flex items-center gap-2 mb-3 text-green-600">
+                                                <div className="flex items-center gap-2 mb-3 text-green-400">
                                                     <CheckCircle2 className="w-4 h-4" />
                                                     <span className="text-xs font-black uppercase tracking-widest">The Move</span>
                                                 </div>
-                                                <p className="text-sm text-neutral-600 leading-relaxed font-bold">{selectedIndustry.solution}</p>
+                                                <p className="text-sm text-foreground/80 leading-relaxed font-bold">{selectedIndustry.solution}</p>
                                             </div>
                                         </div>
 
-                                        <div className="grid grid-cols-1 gap-8 mb-10 pt-8 border-t border-neutral-100">
+                                        <div className="grid grid-cols-1 gap-8 mb-10 pt-8 border-t border-white/[0.08]">
                                             <div className="flex flex-col gap-4">
-                                                <span className="text-xs font-bold uppercase tracking-widest text-neutral-400">System Highlights</span>
+                                                <span className="text-xs font-bold uppercase tracking-widest text-foreground/50">System Highlights</span>
                                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                                     {selectedIndustry.features.map((f, i) => (
-                                                        <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white border border-neutral-200 shadow-sm">
+                                                        <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.06] border border-white/10 shadow-sm">
                                                             <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
                                                                 <CheckCircle2 className="w-3 h-3" />
                                                             </div>
-                                                            <span className="text-[11px] font-bold text-neutral-800 leading-tight">{f}</span>
+                                                            <span className="text-[11px] font-bold text-foreground/80 leading-tight">{f}</span>
                                                         </div>
                                                     ))}
                                                 </div>
@@ -702,7 +795,7 @@ export default function Home() {
                                                     </div>
                                                 </div>
                                                 <div className="mt-6 pt-6 border-t border-white/10 flex items-center justify-between">
-                                                    <span className="text-xs font-bold text-neutral-400 italic">Target ROI: High</span>
+                                                    <span className="text-xs font-bold text-foreground/45 italic">Target ROI: High</span>
                                                     <span className="text-xs font-black text-primary uppercase tracking-widest">{t('industries.modal.investment')}</span>
                                                 </div>
                                             </div>
@@ -722,7 +815,7 @@ export default function Home() {
                         )}
                     </AnimatePresence>
 
-                    <div className="bg-neutral-900 text-white p-12 rounded-[3rem] shadow-2xl text-center max-w-4xl mx-auto relative overflow-hidden">
+                    <div className="bg-[#0a0d1a] border border-white/[0.08] text-white px-10 py-12 rounded-[2.5rem] shadow-2xl text-center max-w-4xl mx-auto relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
                         <h2 className="text-4xl font-black mb-6 relative z-10">{t('industries.notListed.title')}</h2>
                         <p className="text-lg text-neutral-400 mb-10 relative z-10">{t('industries.notListed.desc')}</p>
@@ -735,28 +828,28 @@ export default function Home() {
             </section>
 
             {/* HOW IT WORKS */}
-            <section id="how-it-works" className="py-32 px-6 relative z-10 bg-white/50">
-                <div className="container mx-auto px-4">
-                    <div className="max-w-4xl mb-32 text-center mx-auto">
+            <section id="how-it-works" className="py-24 px-6 relative z-10">
+                <div className="container mx-auto max-w-7xl">
+                    <div className="max-w-3xl mb-16 text-center mx-auto">
                         <span className="trust-badge mb-4 inline-block">{t('howItWorks.title1')}</span>
-                        <h2 className="text-5xl md:text-8xl font-heading font-black mb-8 leading-tight text-foreground">
+                        <h2 className="text-4xl md:text-5xl font-heading font-black mb-6 leading-tight text-foreground">
                             {t('howItWorks.title2')}
                         </h2>
                     </div>
 
-                    <div className="relative max-w-7xl mx-auto mb-44">
+                    <div className="relative max-w-7xl mx-auto mb-8">
                         {/* Connecting Line (Desktop) */}
-                        <div className="absolute top-12 left-0 w-full h-2 bg-neutral-100 rounded-full hidden md:block overflow-hidden">
-                            <div className="w-full h-full bg-gradient-to-r from-transparent via-primary/50 to-transparent w-[50%] animate-pulse" />
+                        <div className="absolute top-12 left-0 w-full h-px bg-white/[0.08] hidden md:block overflow-hidden">
+                            <div className="h-full bg-gradient-to-r from-transparent via-primary/50 to-transparent w-[50%] animate-pulse" />
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-7 gap-8 relative z-10">
                             {steps.map((step, i) => (
                                 <div key={i} className="flex flex-col items-center text-center group">
-                                    <div className="w-24 h-24 rounded-full bg-white border-4 border-neutral-100 flex items-center justify-center text-primary group-hover:border-primary transition-all duration-300 mb-6 relative z-20 shadow-lg group-hover:shadow-brand-glow group-hover:-translate-y-2">
+                                    <div className="w-24 h-24 rounded-full bg-white/[0.06] border-2 border-white/15 flex items-center justify-center text-primary group-hover:border-primary group-hover:-translate-y-2 transition-all duration-300 mb-6 relative z-20 shadow-lg group-hover:shadow-brand-glow">
                                         {step.icon}
                                     </div>
-                                    <h3 className="font-bold text-sm uppercase tracking-widest mb-3 bg-neutral-100 px-3 py-1 rounded-full">{step.label}</h3>
+                                    <h3 className="font-bold text-sm uppercase tracking-widest mb-3 bg-white/[0.08] px-3 py-1 rounded-full text-foreground">{step.label}</h3>
                                     <p className="text-xs font-medium text-muted-foreground leading-relaxed px-1 opacity-80 group-hover:opacity-100 transition-opacity">{step.desc}</p>
                                 </div>
                             ))}
@@ -766,15 +859,15 @@ export default function Home() {
             </section>
 
             {/* Visual Trust Section (Dashboard) */}
-            <section className="py-32 px-6 relative overflow-hidden z-10">
-                <div className="container mx-auto flex flex-col lg:flex-row items-center gap-20">
+            <section className="py-24 px-6 relative overflow-hidden z-10 border-y border-white/[0.06]">
+                <div className="container mx-auto max-w-7xl flex flex-col lg:flex-row items-center gap-16">
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         className="lg:w-1/2"
                     >
-                        <h2 className="text-4xl md:text-6xl font-heading font-black mb-8 leading-tight">
+                        <h2 className="text-3xl md:text-5xl font-heading font-black mb-8 leading-tight">
                             <span className="text-gradient">Revenue Pipeline</span> Visibility.
                         </h2>
                         <ul className="space-y-6">
@@ -795,7 +888,7 @@ export default function Home() {
                                     <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
                                         <CheckCircle2 className="w-4 h-4 text-primary" />
                                     </div>
-                                    <span className="text-lg text-muted-foreground">{item}</span>
+                                    <span className="text-lg text-muted-foreground/90">{item}</span>
                                 </motion.li>
                             ))}
                         </ul>
@@ -806,29 +899,81 @@ export default function Home() {
                         viewport={{ once: true }}
                         className="lg:w-1/2 relative"
                     >
-                        <div className="absolute -inset-4 bg-primary/20 rounded-[3rem] blur-3xl opacity-50" />
-                        <div className="relative rounded-[2.5rem] overflow-hidden border border-black/10 shadow-2xl">
-                            <Image
-                                src="/dash.png"
-                                alt="Systems Dashboard"
-                                width={800}
-                                height={600}
-                                className="w-full h-auto"
-                            />
+                        <div className="absolute -inset-4 bg-primary/15 rounded-[3rem] blur-3xl opacity-60" />
+                        {/* CSS-only analytics dashboard mockup */}
+                        <div className="relative rounded-[2rem] overflow-hidden border border-white/[0.12] shadow-2xl bg-[#0a0d1a] p-6">
+                            {/* Header row */}
+                            <div className="flex items-center justify-between mb-6">
+                                <div>
+                                    <p className="text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground">Analytics</p>
+                                    <p className="text-base font-black text-foreground">Revenue Dashboard</p>
+                                </div>
+                                <div className="flex gap-1.5">
+                                    <div className="w-3 h-3 rounded-full bg-red-500/60" />
+                                    <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
+                                    <div className="w-3 h-3 rounded-full bg-green-500/60" />
+                                </div>
+                            </div>
+                            {/* KPI cards */}
+                            <div className="grid grid-cols-3 gap-3 mb-5">
+                                {[
+                                    { label: "Leads", value: "1,240", change: "+18%", up: true },
+                                    { label: "Revenue", value: "₹3.2L", change: "+31%", up: true },
+                                    { label: "Churn", value: "2.1%", change: "-0.4%", up: false },
+                                ].map((k) => (
+                                    <div key={k.label} className="bg-white/[0.05] border border-white/[0.07] rounded-xl p-3">
+                                        <p className="text-[9px] text-muted-foreground uppercase tracking-widest mb-1">{k.label}</p>
+                                        <p className="text-lg font-black text-foreground leading-none">{k.value}</p>
+                                        <p className={`text-[10px] font-bold mt-1 ${k.up ? 'text-green-400' : 'text-red-400'}`}>{k.change}</p>
+                                    </div>
+                                ))}
+                            </div>
+                            {/* Bar chart strip */}
+                            <div className="mb-5">
+                                <p className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-2">Weekly Performance</p>
+                                <div className="flex items-end gap-1.5 h-16">
+                                    {[55, 40, 70, 60, 90, 75, 85].map((h, i) => (
+                                        <div key={i} className="flex-1 rounded-t-md" style={{ height: `${h}%`, background: i === 4 ? 'hsl(190 100% 50%)' : 'rgba(255,255,255,0.12)' }} />
+                                    ))}
+                                </div>
+                                <div className="flex gap-1.5 mt-1">
+                                    {['M','T','W','T','F','S','S'].map((d,i) => (
+                                        <p key={i} className="flex-1 text-center text-[8px] text-muted-foreground">{d}</p>
+                                    ))}
+                                </div>
+                            </div>
+                            {/* Funnel rows */}
+                            <div className="space-y-2">
+                                {[
+                                    { label: "Lead Capture", pct: 94, color: "bg-primary" },
+                                    { label: "Qualification", pct: 72, color: "bg-secondary" },
+                                    { label: "Conversion", pct: 41, color: "bg-green-500" },
+                                ].map((r) => (
+                                    <div key={r.label}>
+                                        <div className="flex justify-between mb-0.5">
+                                            <span className="text-[9px] text-muted-foreground">{r.label}</span>
+                                            <span className="text-[9px] font-black text-foreground">{r.pct}%</span>
+                                        </div>
+                                        <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+                                            <div className={`h-full ${r.color} rounded-full`} style={{ width: `${r.pct}%` }} />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </motion.div>
                 </div>
             </section>
 
             {/* Testimonials */}
-            <section className="py-32 px-6 bg-black/[0.02] border-y border-black/5 relative z-10">
-                <div className="container mx-auto">
-                    <div className="text-center mb-16">
+            <section className="py-24 px-6 border-y border-white/[0.06] relative z-10">
+                <div className="container mx-auto max-w-7xl">
+                    <div className="text-center mb-12">
                         <span className="trust-badge mb-4 inline-block">Social Proof</span>
                         <h2 className="text-4xl md:text-5xl font-black">Success Stories.</h2>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {reviews.map((review, i) => (
                             <motion.div
                                 key={i}
@@ -836,19 +981,19 @@ export default function Home() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.1 }}
-                                className="glass rounded-3xl p-10 flex flex-col"
+                                className="glass rounded-2xl p-8 flex flex-col border border-white/[0.08]"
                             >
-                                <Quote className="w-10 h-10 text-primary/20 mb-6" />
-                                <p className="text-lg italic text-muted-foreground mb-8 flex-grow">"{review.content}"</p>
+                                <Quote className="w-8 h-8 text-primary/30 mb-5" />
+                                <p className="text-base italic text-muted-foreground mb-7 flex-grow leading-relaxed">"{review.content}"</p>
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full bg-primary/10 border border-black/10 flex items-center justify-center">
+                                    <div className="w-12 h-12 rounded-full bg-primary/10 border border-white/10 flex items-center justify-center shrink-0">
                                         <Users className="w-6 h-6 text-primary" />
                                     </div>
-                                    <div>
-                                        <div className="font-bold">{review.name}</div>
-                                        <div className="text-xs text-muted-foreground">{review.role}</div>
+                                    <div className="min-w-0">
+                                        <div className="font-bold truncate">{review.name}</div>
+                                        <div className="text-xs text-muted-foreground truncate">{review.role}</div>
                                     </div>
-                                    <div className="ml-auto flex gap-0.5">
+                                    <div className="ml-auto flex gap-0.5 shrink-0">
                                         {[...Array(5)].map((_, i) => <Star key={i} className="w-3 h-3 fill-primary text-primary" />)}
                                     </div>
                                 </div>
@@ -858,17 +1003,31 @@ export default function Home() {
                 </div>
             </section>
 
+            {/* FAQ SECTION */}
+            <section id="faq" className="py-24 px-6 relative z-10">
+                <div className="container mx-auto max-w-4xl px-6">
+                    <div className="text-center mb-16">
+                        <span className="trust-badge mb-4 inline-block">{t('faq.badge')}</span>
+                        <h2 className="text-4xl md:text-5xl font-heading font-black leading-tight text-foreground">
+                            {t('faq.title')}<span className="text-primary">{t('faq.titleAccent')}</span>
+                        </h2>
+                    </div>
+
+                    <FAQAccordion />
+                </div>
+            </section>
+
             {/* PRICING SECTION */}
-            <section id="pricing" className="py-32 relative z-10">
-                <div className="container mx-auto px-4">
-                    <div className="text-center mb-24 max-w-3xl mx-auto">
+            <section id="pricing" className="py-24 px-6 relative z-10">
+                <div className="container mx-auto max-w-7xl">
+                    <div className="text-center mb-16 max-w-2xl mx-auto">
                         <span className="trust-badge mb-4 inline-block">{t('pricing.title1')}</span>
-                        <h2 className="text-5xl md:text-7xl font-heading font-black mb-8 leading-tight text-foreground">
+                        <h2 className="text-4xl md:text-5xl font-heading font-black mb-8 leading-tight text-foreground">
                             {t('pricing.title2')} <span className="text-gradient">{t('pricing.title3')}</span>
                         </h2>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-2">
                         {/* LAUNCHPAD */}
                         <PricingCard
                             title={t('pricing.launchpad.title')}
@@ -920,46 +1079,47 @@ export default function Home() {
             </section>
 
             {/* CONTACT SECTION */}
-            <section id="contact" className="py-32 relative z-10 bg-black/[0.02] border-t border-black/5">
-                <div className="container mx-auto px-4">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
+            <section id="contact" className="py-24 px-6 relative z-10 border-t border-white/[0.06]">
+                <div className="container mx-auto max-w-7xl">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
                         <div>
                             <span className="trust-badge mb-4 inline-block">{t('contact.title1')}</span>
-                            <h2 className="text-6xl md:text-8xl font-heading font-black mb-8 leading-tight tracking-tighter">
+                            <h2 className="text-4xl md:text-5xl font-heading font-black mb-6 leading-tight tracking-tight">
                                 {t('contact.title2')}
                             </h2>
-                            <p className="text-xl text-muted-foreground mb-16 leading-relaxed max-w-lg">
+                            <p className="text-lg text-muted-foreground mb-12 leading-relaxed max-w-md">
                                 {t('contact.subtitle')}
                             </p>
 
-                            <div className="space-y-12">
-                                <div className="flex gap-6 group">
-                                    <div className="w-14 h-14 rounded-2xl glass border border-black/10 flex items-center justify-center text-primary font-black text-xl group-hover:bg-primary group-hover:text-white transition-all shadow-brand-glow">1</div>
-                                    <p className="text-xl font-medium leading-relaxed">{t('contact.step1')}</p>
+                            <div className="space-y-8">
+                                <div className="flex items-start gap-5 group">
+                                    <div className="w-12 h-12 shrink-0 rounded-xl glass border border-white/10 flex items-center justify-center text-primary font-black text-lg group-hover:bg-primary group-hover:text-white transition-all shadow-brand-glow">1</div>
+                                    <p className="text-base font-medium leading-relaxed text-foreground/80 pt-2">{t('contact.step1')}</p>
                                 </div>
-                                <div className="flex gap-6 group">
-                                    <div className="w-14 h-14 rounded-2xl glass border border-black/10 flex items-center justify-center text-primary font-black text-xl group-hover:bg-primary group-hover:text-white transition-all shadow-brand-glow">2</div>
-                                    <p className="text-xl font-medium leading-relaxed">{t('contact.step2')}</p>
+                                <div className="flex items-start gap-5 group">
+                                    <div className="w-12 h-12 shrink-0 rounded-xl glass border border-white/10 flex items-center justify-center text-primary font-black text-lg group-hover:bg-primary group-hover:text-white transition-all shadow-brand-glow">2</div>
+                                    <p className="text-base font-medium leading-relaxed text-foreground/80 pt-2">{t('contact.step2')}</p>
                                 </div>
-                                <div className="flex gap-6 group">
-                                    <div className="w-14 h-14 rounded-2xl glass border border-black/10 flex items-center justify-center text-primary font-black text-xl group-hover:bg-primary group-hover:text-white transition-all shadow-brand-glow">3</div>
-                                    <p className="text-xl font-medium leading-relaxed">{t('contact.step3')}</p>
+                                <div className="flex items-start gap-5 group">
+                                    <div className="w-12 h-12 shrink-0 rounded-xl glass border border-white/10 flex items-center justify-center text-primary font-black text-lg group-hover:bg-primary group-hover:text-white transition-all shadow-brand-glow">3</div>
+                                    <p className="text-base font-medium leading-relaxed text-foreground/80 pt-2">{t('contact.step3')}</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="bento-card border-black/10 shadow-brand-glow-lg overflow-hidden relative">
+                        <div className="bento-card border-white/10 shadow-brand-glow-lg overflow-hidden relative">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -translate-y-32 translate-x-32"></div>
                             {submitted ? (
                                 <div className="glass p-12 rounded-[3rem] text-center max-w-xl animate-in zoom-in-95 duration-500">
                                     <div className="w-20 h-20 rounded-full bg-green-500/10 flex items-center justify-center text-green-500 mx-auto mb-8">
                                         <CheckCircle2 className="w-10 h-10" />
                                     </div>
-                                    <h1 className="text-4xl font-black mb-4">{t('contact.success.title')}</h1>
+                                    <h2 className="text-4xl font-black mb-4">{t('contact.success.title')}</h2>
                                     <p className="text-muted-foreground mb-8">
                                         {t('contact.success.message')}
                                     </p>
                                     <button
+                                        type="button"
                                         onClick={() => setSubmitted(false)}
                                         className="text-primary font-bold hover:underline"
                                     >
@@ -969,26 +1129,26 @@ export default function Home() {
                             ) : (
                                 <form onSubmit={handleSubmit} className="relative z-10 space-y-8">
                                     {error && <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-500 text-sm font-bold rounded-xl">{error}</div>}
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-3">
-                                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">{t('contact.form.business')}</label>
-                                            <input required name="business" type="text" placeholder={t('contact.form.businessPlaceholder')} className="w-full glass border border-black/10 rounded-2xl px-6 py-4 focus:border-primary focus:shadow-brand-glow outline-none transition-all placeholder:opacity-30" />
+                                            <label htmlFor="business" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">{t('contact.form.business')}</label>
+                                            <input required id="business" name="business" type="text" placeholder={t('contact.form.businessPlaceholder')} className="w-full glass border border-white/10 rounded-2xl px-6 py-4 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:opacity-30" />
                                         </div>
                                         <div className="space-y-3">
-                                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">{t('contact.form.city')}</label>
-                                            <input required name="city" type="text" placeholder={t('contact.form.cityPlaceholder')} className="w-full glass border border-black/10 rounded-2xl px-6 py-4 focus:border-primary focus:shadow-brand-glow outline-none transition-all placeholder:opacity-30" />
+                                            <label htmlFor="city" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">{t('contact.form.city')}</label>
+                                            <input required id="city" name="city" type="text" placeholder={t('contact.form.cityPlaceholder')} className="w-full glass border border-white/10 rounded-2xl px-6 py-4 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:opacity-30" />
                                         </div>
                                     </div>
 
                                     <div className="space-y-3">
-                                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">{t('contact.form.whatsapp')}</label>
-                                        <input required name="whatsapp" type="tel" placeholder={t('contact.form.whatsappPlaceholder')} className="w-full glass border border-black/10 rounded-2xl px-6 py-4 focus:border-primary focus:shadow-brand-glow outline-none transition-all placeholder:opacity-30" />
+                                        <label htmlFor="whatsapp" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">{t('contact.form.whatsapp')}</label>
+                                        <input required id="whatsapp" name="whatsapp" type="tel" placeholder={t('contact.form.whatsappPlaceholder')} className="w-full glass border border-white/10 rounded-2xl px-6 py-4 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:opacity-30" />
                                     </div>
 
                                     <div className="space-y-3">
-                                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">{t('contact.form.budget')}</label>
+                                        <label htmlFor="budget" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">{t('contact.form.budget')}</label>
                                         <div className="relative">
-                                            <select name="budget" className="w-full glass border border-black/10 rounded-2xl px-6 py-4 focus:border-primary focus:shadow-brand-glow outline-none transition-all appearance-none cursor-pointer">
+                                            <select id="budget" name="budget" className="w-full glass border border-white/10 rounded-2xl px-6 py-4 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all appearance-none cursor-pointer">
                                                 <option className="bg-background">{t('contact.form.budget1')}</option>
                                                 <option className="bg-background">{t('contact.form.budget2')}</option>
                                                 <option className="bg-background">{t('contact.form.budget3')}</option>
@@ -1003,10 +1163,10 @@ export default function Home() {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className="w-full py-6 bg-primary text-white rounded-2xl font-black text-2xl flex items-center justify-center gap-4 shadow-brand-glow hover:scale-[1.02] transition-all mt-12 disabled:opacity-50 disabled:cursor-not-allowed group"
+                                        className="w-full py-5 bg-primary text-primary-foreground rounded-2xl font-black text-lg flex items-center justify-center gap-3 shadow-brand-glow hover:scale-[1.02] transition-all mt-8 disabled:opacity-50 disabled:cursor-not-allowed group"
                                     >
-                                        {loading ? <Loader2 className="w-8 h-8 animate-spin" /> : <span>{t('contact.form.submit')}</span>}
-                                        {!loading && <Send className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
+                                        {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : <span>{t('contact.form.submit')}</span>}
+                                        {!loading && <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
                                     </button>
 
                                     <p className="text-[10px] text-center text-muted-foreground uppercase tracking-[0.3em] font-black">{t('contact.form.secure')}</p>

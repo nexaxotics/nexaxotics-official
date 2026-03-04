@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useState, ReactNode } from 'react';
+import NextImage from 'next/image';
 
 interface Interactive3DCardProps {
     width?: string;
@@ -51,27 +52,34 @@ const Interactive3DCard = ({
     return (
         <div
             ref={cardRef}
-            className={`relative rounded-[2rem] shadow-lg hover:shadow-brand-glow border border-neutral-200 bg-white/80 backdrop-blur-md transition-all duration-300 ease-out ${className}`}
+            className={`relative rounded-[2rem] transition-all duration-300 ease-out ${className}`}
             style={{
                 width,
-                height, // Allow height to be overridden or auto
+                height,
                 minHeight: '300px',
                 transform,
-                transformStyle: 'preserve-3d'
+                transformStyle: 'preserve-3d',
+                background: 'rgba(255, 255, 255, 0.04)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
+                border: '1px solid rgba(255, 255, 255, 0.10)',
+                boxShadow: '0 4px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08)',
             }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
         >
-            {/* Glossy Overlay */}
-            <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-white/20 to-transparent pointer-events-none mix-blend-overlay"></div>
+            {/* Top edge highlight */}
+            <div className="absolute inset-x-0 top-0 h-px rounded-t-[2rem] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
+            {/* Subtle inner glow on hover — handled via className override */}
+            <div className="absolute inset-0 rounded-[2rem] opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: 'radial-gradient(600px circle at var(--mouse-x,50%) var(--mouse-y,50%), rgba(0,212,255,0.04), transparent 60%)' }} />
 
             <div
                 className="relative z-10 p-8 h-full flex flex-col"
                 style={{ transform: parallax, transition: 'transform 0.1s ease-out' }} // Faster parallax
             >
                 {image && (
-                    <div className="h-48 mb-6 overflow-hidden rounded-xl">
-                        <img src={image} alt={title || 'Card image'} className="w-full h-full object-cover" />
+                    <div className="h-48 mb-6 overflow-hidden rounded-xl relative">
+                        <NextImage src={image} alt={title || 'Card image'} fill className="object-cover" />
                     </div>
                 )}
 
