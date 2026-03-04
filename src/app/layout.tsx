@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import IntroAnimation from "@/components/IntroAnimation";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import CustomCursor from "@/components/CustomCursor";
 
@@ -37,6 +38,7 @@ export default function RootLayout({
                         <Footer />
                     </IntroAnimation>
                 </LanguageProvider>
+                <SpeedInsights />
             </body>
         </html>
     );
