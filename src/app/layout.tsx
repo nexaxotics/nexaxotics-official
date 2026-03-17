@@ -14,13 +14,19 @@ const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" }); // Add
 export const metadata: Metadata = {
     title: "NEXAXOTICS | Customer Acquisition Systems for Small Businesses",
     description: "NEXAXOTICS builds automated customer acquisition systems — not ads. Get more leads, more booked calls, and more revenue on autopilot. Book a free audit today.",
-    keywords: ["customer acquisition", "lead generation system", "automated marketing", "small business growth", "digital agency", "sales funnel", "CRM automation"],
+    keywords: ["customer acquisition", "lead generation system", "automated marketing", "small business growth", "digital agency", "sales funnel", "CRM automation", "UGC content", "AI influencer", "landing page design", "full stack development"],
     authors: [{ name: "NEXAXOTICS" }],
     creator: "NEXAXOTICS",
+    publisher: "NEXAXOTICS",
     metadataBase: new URL("https://nexaxotics.com"),
     alternates: {
         canonical: "/",
+        languages: {
+            'en-US': '/en',
+            'hi-IN': '/hi',
+        },
     },
+    category: 'technology',
     openGraph: {
         type: "website",
         locale: "en_US",
@@ -96,6 +102,7 @@ export default function RootLayout({
                                     "url": "https://nexaxotics.com",
                                     "name": "NEXAXOTICS",
                                     "publisher": { "@id": "https://nexaxotics.com/#organization" },
+                                    "inLanguage": ["en-US", "hi-IN"],
                                     "potentialAction": {
                                         "@type": "SearchAction",
                                         "target": "https://nexaxotics.com/?s={search_term_string}",
@@ -149,11 +156,16 @@ export default function RootLayout({
                 />
             </head>
             <body className={`${inter.variable} ${outfit.variable} font-sans min-h-screen flex flex-col bg-background text-foreground`}>
+                {/* Skip to main content link for accessibility */}
+                <a href="#main-content" className="skip-link">
+                    Skip to main content
+                </a>
+                
                 <LanguageProvider>
                     <CustomCursor />
                     <IntroAnimation>
                         <Header />
-                        <main className="flex-grow">
+                        <main id="main-content" className="flex-grow">
                             {children}
                         </main>
                         <Footer />

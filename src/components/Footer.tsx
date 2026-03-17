@@ -26,11 +26,11 @@ export default function Footer() {
                             © {new Date().getFullYear()} - Infrastructure for Service Excellence.
                         </div>
                         <div className="flex flex-wrap justify-center md:justify-start gap-6 text-[10px] uppercase tracking-widest font-bold text-muted-foreground">
-                            <Link href="#how-it-works" className="hover:text-primary transition-colors">{t('header.howItWorks')}</Link>
                             <Link href="#systems" className="hover:text-primary transition-colors">{t('header.systems')}</Link>
-                            <Link href="#industries" className="hover:text-primary transition-colors">{t('header.industries')}</Link>
-                            <Link href="#pricing" className="hover:text-primary transition-colors">{t('header.pricing')}</Link>
-                            <Link href="#our-work" className="hover:text-primary transition-colors">Our Work</Link>
+                            <Link href="#how-it-works" className="hover:text-primary transition-colors">Use Cases</Link>
+                            <Link href="#process" className="hover:text-primary transition-colors">Process</Link>
+                            <Link href="#our-work" className="hover:text-primary transition-colors">Portfolio</Link>
+                            <Link href="#pricing" className="hover:text-primary transition-colors">Model</Link>
                         </div>
                     </div>
 

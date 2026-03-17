@@ -5,13 +5,13 @@
 :root {
   /* ── Deep Navy Dark Theme ── */
   --background: 222 47% 5%;       /* #05080f */
-  --foreground: 210 20% 93%;      /* #EBEEf2 — near-white */
+  --foreground: 210 20% 96%;      /* #F5F7FB — brightest white for best contrast */
 
   --card: 222 40% 8%;             /* #0a1020 */
-  --card-foreground: 210 20% 93%;
+  --card-foreground: 210 20% 96%;
 
   --popover: 222 40% 7%;
-  --popover-foreground: 210 20% 93%;
+  --popover-foreground: 210 20% 96%;
 
   /* Brand Palette */
   --primary: 190 100% 50%;        /* #00D7FF — vivid cyan */
@@ -21,16 +21,16 @@
   --secondary-foreground: 0 0% 100%;
 
   --muted: 222 35% 13%;           /* subtle dark surface */
-  --muted-foreground: 215 20% 62%; /* lifted to be clearly readable on dark */
+  --muted-foreground: 215 13% 74%; /* brighter for 7+:1 contrast ratio */
 
   --accent: 222 35% 13%;
-  --accent-foreground: 210 20% 93%;
+  --accent-foreground: 210 20% 96%;
 
   --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 98%;
 
-  --border: 222 30% 14%;          /* #131d30 */
-  --input: 222 35% 11%;
+  --border: 222 30% 16%;          /* #192234 — brighter borders */
+  --input: 222 35% 13%;
   --ring: 190 100% 50%;
 }
 
@@ -53,15 +53,21 @@
 
   @media (pointer: fine) {
     body {
-      cursor: none;
+      cursor: none !important;
     }
 
+    *,
     a,
     button,
     [role="button"],
     select,
-    input {
-      cursor: none;
+    input,
+    textarea,
+    label,
+    div[onclick],
+    svg,
+    img {
+      cursor: none !important;
     }
   }
 }
@@ -140,6 +146,235 @@
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
   backdropFilter: blur(12px);
+}
+
+/* Styled Input - Floating Label Animation */
+.styled-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.styled-input-label {
+  position: absolute;
+  top: 16px;
+  left: 0;
+  font-size: 14px;
+  color: rgba(235, 238, 242, 0.75);
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.styled-input-field {
+  display: block;
+  width: 100%;
+  padding: 16px 0;
+  font-size: 16px;
+  border: none;
+  border-bottom: 2px solid rgba(150, 150, 150, 0.4);
+  outline: none;
+  background-color: transparent;
+  color: rgba(245, 247, 251, 0.98);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+}
+
+.styled-input-field::placeholder {
+  color: transparent;
+}
+
+.styled-input-field:focus {
+  border-bottom-color: #00d7ff;
+  box-shadow: 0 2px 8px rgba(0, 215, 255, 0.1);
+}
+
+.styled-input-field:focus + .styled-input-label,
+.styled-input-field:not(:placeholder-shown) + .styled-input-label {
+  top: -24px;
+  font-size: 11px;
+  color: #00d7ff;
+  letter-spacing: 0.15em;
+}
+
+/* Enhanced Button Animations */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.button-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Smooth scroll behavior */
+@supports (scroll-behavior: smooth) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Focus visible for accessibility */
+*:focus-visible {
+  outline: 2px solid #00d7ff;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Skip link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #00d7ff;
+  color: #05080f;
+  padding: 8px;
+  text-decoration: none;
+  z-index: 100;
+  font-weight: 700;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Loading skeleton animation */
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 8px;
+}
+
+/* Enhanced glow effects for better visual hierarchy */
+.shadow-brand-glow {
+  box-shadow: 0 4px 20px rgba(0, 215, 255, 0.2), 0 0 40px rgba(0, 215, 255, 0.1);
+}
+
+.shadow-brand-glow-lg {
+  box-shadow: 0 8px 32px rgba(0, 215, 255, 0.25), 0 0 60px rgba(0, 215, 255, 0.15);
+}
+
+.shadow-trust-glow {
+  box-shadow: 0 2px 12px rgba(0, 215, 255, 0.15);
+}
+
+/* Improved text selection */
+::selection {
+  background-color: rgba(0, 215, 255, 0.3);
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background-color: rgba(0, 215, 255, 0.3);
+  color: #ffffff;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 215, 255, 0.3);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 215, 255, 0.5);
+}
+
+/* Improved button press effect */
+button:active:not(:disabled),
+a[role="button"]:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* Smooth hover transitions */
+button,
+a,
+input,
+textarea,
+select {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced focus styles for forms */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 215, 255, 0.1);
+}
+
+/* Improved card hover effects */
+.bento-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 215, 255, 0.2), 0 0 80px rgba(0, 215, 255, 0.1);
+}
+
+.styled-input-highlight {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: linear-gradient(90deg, #00d7ff 0%, #0099cc 100%);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.styled-input-field:focus ~ .styled-input-highlight {
+  width: 100%;
+}
+
+.styled-input-wrapper.has-value .styled-input-highlight {
+  width: 100%;
+  opacity: 0.5;
+  background: linear-gradient(90deg, rgba(0, 215, 255, 0.6) 0%, rgba(0, 153, 204, 0.6) 100%);
 }
 
 /* Custom Scrollbar */

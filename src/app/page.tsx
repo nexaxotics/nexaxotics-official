@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,7 +8,10 @@ import Interactive3DCard from "@/components/Interactive3DCard";
 import PricingCard from "@/components/PricingCard";
 import FAQAccordion from "@/components/FAQAccordion";
 import OurWork from "@/components/OurWork";
+import StyledInput from "@/components/StyledInput";
+import Toast from "../components/Toast";
 import { supabase } from '@/lib/supabase';
+import { validateWhatsApp, validateBusinessName, validateCity, formatWhatsAppNumber } from '@/utils/validation';
 import {
     Zap,
     ShieldCheck,
@@ -35,7 +38,8 @@ import {
     Search,
     Send,
     Loader2,
-    X
+    X,
+    Code
 } from "lucide-react";
 
 export default function Home() {
@@ -85,6 +89,39 @@ export default function Home() {
                 t('systems.content.benefit1'),
                 t('systems.content.benefit2'),
                 t('systems.content.benefit3')
+            ]
+        },
+        {
+            title: t('systems.ugc.title'),
+            icon: <Users className="w-10 h-10" />,
+            does: t('systems.ugc.does'),
+            gets: t('systems.ugc.gets'),
+            benefits: [
+                t('systems.ugc.benefit1'),
+                t('systems.ugc.benefit2'),
+                t('systems.ugc.benefit3')
+            ]
+        },
+        {
+            title: t('systems.landing.title'),
+            icon: <Search className="w-10 h-10" />,
+            does: t('systems.landing.does'),
+            gets: t('systems.landing.gets'),
+            benefits: [
+                t('systems.landing.benefit1'),
+                t('systems.landing.benefit2'),
+                t('systems.landing.benefit3')
+            ]
+        },
+        {
+            title: t('systems.fullstack.title'),
+            icon: <Code className="w-10 h-10" />,
+            does: t('systems.fullstack.does'),
+            gets: t('systems.fullstack.gets'),
+            benefits: [
+                t('systems.fullstack.benefit1'),
+                t('systems.fullstack.benefit2'),
+                t('systems.fullstack.benefit3')
             ]
         }
     ];
@@ -240,21 +277,61 @@ export default function Home() {
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string>("");
+    const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "warning"; isVisible: boolean }>({
+        message: "",
+        type: "success",
+        isVisible: false
+    });
+    const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+    const showToast = useCallback((message: string, type: "success" | "error" | "warning") => {
+        setToast({ message, type, isVisible: true });
+    }, []);
+
+    const hideToast = useCallback(() => {
+        setToast(prev => ({ ...prev, isVisible: false }));
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
         setError("");
+        setFieldErrors({});
 
         const formData = new FormData(e.currentTarget);
+        
+        const business = formData.get("business") as string;
+        const city = formData.get("city") as string;
+        const whatsapp = formData.get("whatsapp") as string;
+        const budget = formData.get("budget") as string;
+
+        // Validate all fields
+        const businessValidation = validateBusinessName(business);
+        const cityValidation = validateCity(city);
+        const whatsappValidation = validateWhatsApp(whatsapp);
+
+        const errors: Record<string, string> = {};
+        if (!businessValidation.isValid) errors.business = businessValidation.error!;
+        if (!cityValidation.isValid) errors.city = cityValidation.error!;
+        if (!whatsappValidation.isValid) errors.whatsapp = whatsappValidation.error!;
+
+        if (Object.keys(errors).length > 0) {
+            setFieldErrors(errors);
+            setLoading(false);
+            showToast("Please fix the errors in the form", "error");
+            return;
+        }
+
+        // Format WhatsApp number
+        const formattedWhatsApp = formatWhatsAppNumber(whatsapp);
 
         // Data object mirroring the Supabase schema
         const leadData = {
             name: "Prospect", // Default name as form has no name field yet
-            business: formData.get("business") as string,
-            city: formData.get("city") as string,
-            whatsapp: formData.get("whatsapp") as string,
-            budget: formData.get("budget") as string,
+            business: business.trim(),
+            city: city.trim(),
+            whatsapp: formattedWhatsApp,
+            budget,
             source: 'Main Website',
             status: 'new'
         };
@@ -276,6 +353,9 @@ export default function Home() {
                 const result = await response.json();
                 if (result.success) {
                     setSubmitted(true);
+                    showToast("Thank you! We'll contact you soon.", "success");
+                    // Reset form
+                    (e.target as HTMLFormElement).reset();
                 } else {
                     throw new Error(result.error || 'Submission failed');
                 }
@@ -293,9 +373,14 @@ export default function Home() {
             }
 
             setSubmitted(true);
+            showToast("Thank you! We'll contact you within 24 hours.", "success");
+            // Reset form
+            (e.target as HTMLFormElement).reset();
         } catch (err) {
             console.error('Submission Error:', err);
-            setError(t('contact.form.error'));
+            const errorMessage = t('contact.form.error') || "Something went wrong. Please try again.";
+            setError(errorMessage);
+            showToast(errorMessage, "error");
         } finally {
             setLoading(false);
         }
@@ -324,6 +409,13 @@ export default function Home() {
 
     return (
         <div className="relative min-h-screen bg-background overflow-hidden">
+            {/* Toast Notification */}
+            <Toast
+                message={toast.message}
+                type={toast.type}
+                isVisible={toast.isVisible}
+                onClose={hideToast}
+            />
 
             {/* ── HERO BACKGROUND ─────────────────────────────── */}
             {/* Base gradient wash */}
@@ -351,180 +443,60 @@ export default function Home() {
                 aria-hidden="true"
             />
 
-            {/* ── HERO SECTION ────────────────────────────────── */}
-            <section style={{ position: 'relative' }} className="relative pt-36 pb-24 px-6 z-20">
-                <div className="container mx-auto max-w-7xl">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-
-                        {/* LEFT — Copy */}
-                        <motion.div className="flex flex-col items-start text-left">
-
-                            {/* Status badge */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 16 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5 }}
-                                className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.08] border border-primary/30 backdrop-blur-sm shadow-trust-glow mb-8"
-                            >
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-                                    <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-                                </span>
-                                <span className="text-[10px] font-black uppercase tracking-[0.25em] text-primary">{t('header.badge')}</span>
-                            </motion.div>
-
-                            {/* Headline */}
-                            <motion.h1
-                                className="font-heading font-black leading-[0.95] tracking-tight mb-7"
-                                style={{ fontSize: "clamp(2.4rem, 5vw, 4.6rem)" }}
-                            >
-                                {t('home.hero.title1').split(" ").map((word, i) => (
-                                    <motion.span
-                                        key={i}
-                                        initial={{ opacity: 0, y: 30 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.05 + i * 0.07, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                                        className="inline-block mr-[0.25em]"
-                                    >
-                                        {word}
-                                    </motion.span>
-                                ))}
-                                <br />
-                                <motion.span
-                                    initial={{ opacity: 0, y: 30 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.35, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                                    className="text-gradient inline-block"
-                                >
-                                    {t('home.hero.title2')}
-                                </motion.span>
-                            </motion.h1>
-
-                            {/* Subtitle */}
-                            <motion.p
-                                initial={{ opacity: 0, y: 16 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.45, duration: 0.5 }}
-                                className="text-lg text-muted-foreground mb-10 max-w-lg leading-relaxed"
-                            >
-                                {t('home.hero.subtitle')}
-                            </motion.p>
-
-                            {/* CTAs */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 16 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.55, duration: 0.5 }}
-                                className="flex flex-wrap gap-4 mb-12"
-                            >
-                                <Link
-                                    href="#contact"
-                                    className="group relative inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-full font-bold text-base shadow-brand-glow hover:shadow-brand-glow-lg hover:scale-105 transition-all focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 outline-none overflow-hidden"
-                                >
-                                    <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 rounded-full" />
-                                    <span className="relative">{t('home.hero.cta1')}</span>
-                                    <ArrowRight className="relative w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                                </Link>
-                                <Link
-                                    href="#how-it-works"
-                                    className="inline-flex items-center gap-2 px-8 py-4 bg-white/[0.07] backdrop-blur border border-white/15 text-foreground rounded-full font-bold text-base hover:bg-white/15 hover:border-primary/40 transition-all"
-                                >
-                                    {t('home.hero.cta2')}
-                                </Link>
-                            </motion.div>
-
-                            {/* Trust micro-stats */}
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.7 }}
-                                className="flex flex-wrap items-center gap-x-8 gap-y-3"
-                            >
-                                {[
-                                    { value: "300%", label: t('home.hero.revenueEfficiency') },
-                                    { value: "70%", label: t('home.hero.manualManagement') },
-                                    { value: "10d", label: "Avg. Setup" },
-                                ].map((stat) => (
-                                    <div key={stat.label} className="flex items-center gap-2">
-                                        <span className="text-xl font-black text-foreground">{stat.value}</span>
-                                        <span className="text-xs text-muted-foreground font-medium">{stat.label}</span>
-                                    </div>
-                                ))}
-                            </motion.div>
-                        </motion.div>
-
-                        {/* RIGHT — Live metrics panel */}
+            {/* Hero Section */}
+            <section className="relative pt-52 pb-40 px-6 z-20">
+                <div className="container mx-auto text-center max-w-5xl">
+                    <motion.div>
                         <motion.div
-                            initial={{ opacity: 0, x: 40 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                            className="relative hidden lg:block"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/10 mb-8"
                         >
-                            {/* Glow behind the card */}
-                            <div className="absolute inset-0 bg-primary/15 blur-[80px] rounded-[3rem] scale-90" />
-
-                            <div className="relative bg-white/[0.06] backdrop-blur-xl border border-white/[0.1] rounded-[2.5rem] p-8 shadow-2xl shadow-black/60">
-                                {/* Card header */}
-                                <div className="flex items-center justify-between mb-8">
-                                    <div>
-                                        <p className="text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground">{t('home.hero.systemHealth')}</p>
-                                        <p className="text-lg font-black text-foreground mt-0.5">System Dashboard</p>
-                                    </div>
-                                    <div className="flex items-center gap-2 px-3 py-1.5 bg-green-500/[0.12] border border-green-500/25 rounded-full">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                                        <span className="text-[10px] font-black uppercase tracking-wider text-green-400">{t('home.hero.stable')}</span>
-                                    </div>
-                                </div>
-
-                                {/* Metric rows */}
-                                <div className="space-y-4 mb-8">
-                                    {[
-                                        { label: t('home.hero.leadRecovery'), value: "94%", bar: 94, color: "bg-primary" },
-                                        { label: t('home.hero.revenueEfficiency'), value: "3.2x", bar: 75, color: "bg-secondary" },
-                                        { label: t('home.hero.manualManagement'), value: "↓ 70%", bar: 30, color: "bg-green-500" },
-                                    ].map((m) => (
-                                        <div key={m.label}>
-                                            <div className="flex justify-between items-center mb-1.5">
-                                                <span className="text-xs font-bold text-muted-foreground">{m.label}</span>
-                                                <span className="text-sm font-black text-foreground">{m.value}</span>
-                                            </div>
-                                            <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                                                <motion.div
-                                                    className={`h-full ${m.color} rounded-full`}
-                                                    initial={{ width: 0 }}
-                                                    animate={{ width: `${m.bar}%` }}
-                                                    transition={{ delay: 0.8, duration: 1.2, ease: "easeOut" }}
-                                                />
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {/* Recent activity feed */}
-                                <div className="space-y-2.5">
-                                    <p className="text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground mb-3">Recent Activity</p>
-                                    {[
-                                        { icon: "💬", text: "New lead captured — Mumbai", time: "2m ago" },
-                                        { icon: "📅", text: "Appointment booked — Dental", time: "5m ago" },
-                                        { icon: "⭐", text: "Review collected — 5 stars", time: "12m ago" },
-                                    ].map((a, i) => (
-                                        <motion.div
-                                            key={i}
-                                            initial={{ opacity: 0, x: 10 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: 1 + i * 0.15 }}
-                                            className="flex items-center gap-3 p-2 rounded-xl bg-white/[0.06] border border-white/[0.08]"
-                                        >
-                                            <span className="text-base">{a.icon}</span>
-                                            <span className="text-xs font-medium text-foreground flex-1 truncate">{a.text}</span>
-                                            <span className="text-[10px] text-muted-foreground shrink-0">{a.time}</span>
-                                        </motion.div>
-                                    ))}
-                                </div>
-                            </div>
+                            <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                            <span className="text-xs font-bold uppercase tracking-widest text-primary">{t('header.badge')}</span>
                         </motion.div>
 
-                    </div>
+                        <motion.h1
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                            className="text-5xl md:text-8xl font-heading font-bold mb-8 leading-[1] tracking-tight"
+                        >
+                            {t('home.hero.title1')} <br />
+                            <span className="text-gradient">{t('home.hero.title2')}</span>
+                        </motion.h1>
+
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed"
+                        >
+                            {t('home.hero.subtitle')}
+                        </motion.p>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
+                            className="flex flex-wrap justify-center gap-4"
+                        >
+                            <Link
+                                href="#contact"
+                                className="group relative inline-flex items-center gap-2 px-10 py-4 bg-primary text-primary-foreground rounded-full font-bold text-base shadow-brand-glow hover:shadow-brand-glow-lg hover:scale-105 transition-all outline-none overflow-hidden"
+                            >
+                                <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 rounded-full" />
+                                <span className="relative">{t('home.hero.cta1')}</span>
+                                <ArrowRight className="relative w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                            <Link
+                                href="#how-it-works"
+                                className="px-10 py-4 glass text-foreground rounded-full font-bold text-base hover:bg-white/10 transition-all"
+                            >
+                                {t('home.hero.cta2')}
+                            </Link>
+                        </motion.div>
+                    </motion.div>
                 </div>
             </section>
 
@@ -1132,21 +1104,71 @@ export default function Home() {
                                 </div>
                             ) : (
                                 <form onSubmit={handleSubmit} className="relative z-10 space-y-8">
-                                    {error && <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-500 text-sm font-bold rounded-xl">{error}</div>}
+                                    {error && (
+                                        <motion.div 
+                                            initial={{ opacity: 0, y: -10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className="p-4 bg-red-500/10 border border-red-500/20 text-red-500 text-sm font-bold rounded-xl"
+                                        >
+                                            {error}
+                                        </motion.div>
+                                    )}
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div className="space-y-3">
-                                            <label htmlFor="business" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">{t('contact.form.business')}</label>
-                                            <input required id="business" name="business" type="text" placeholder={t('contact.form.businessPlaceholder')} className="w-full glass border border-white/10 rounded-2xl px-6 py-4 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:opacity-30" />
+                                        <div className="space-y-2">
+                                            <StyledInput
+                                                name="business"
+                                                label={t('contact.form.business')}
+                                                placeholder={t('contact.form.businessPlaceholder')}
+                                                type="text"
+                                                required
+                                            />
+                                            {fieldErrors.business && (
+                                                <motion.p 
+                                                    initial={{ opacity: 0 }}
+                                                    animate={{ opacity: 1 }}
+                                                    className="text-xs text-red-400 mt-1 ml-1"
+                                                >
+                                                    {fieldErrors.business}
+                                                </motion.p>
+                                            )}
                                         </div>
-                                        <div className="space-y-3">
-                                            <label htmlFor="city" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">{t('contact.form.city')}</label>
-                                            <input required id="city" name="city" type="text" placeholder={t('contact.form.cityPlaceholder')} className="w-full glass border border-white/10 rounded-2xl px-6 py-4 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:opacity-30" />
+                                        <div className="space-y-2">
+                                            <StyledInput
+                                                name="city"
+                                                label={t('contact.form.city')}
+                                                placeholder={t('contact.form.cityPlaceholder')}
+                                                type="text"
+                                                required
+                                            />
+                                            {fieldErrors.city && (
+                                                <motion.p 
+                                                    initial={{ opacity: 0 }}
+                                                    animate={{ opacity: 1 }}
+                                                    className="text-xs text-red-400 mt-1 ml-1"
+                                                >
+                                                    {fieldErrors.city}
+                                                </motion.p>
+                                            )}
                                         </div>
                                     </div>
 
-                                    <div className="space-y-3">
-                                        <label htmlFor="whatsapp" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">{t('contact.form.whatsapp')}</label>
-                                        <input required id="whatsapp" name="whatsapp" type="tel" placeholder={t('contact.form.whatsappPlaceholder')} className="w-full glass border border-white/10 rounded-2xl px-6 py-4 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:opacity-30" />
+                                    <div className="space-y-2">
+                                        <StyledInput
+                                            name="whatsapp"
+                                            label={t('contact.form.whatsapp')}
+                                            placeholder={t('contact.form.whatsappPlaceholder')}
+                                            type="tel"
+                                            required
+                                        />
+                                        {fieldErrors.whatsapp && (
+                                            <motion.p 
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                className="text-xs text-red-400 mt-1 ml-1"
+                                            >
+                                                {fieldErrors.whatsapp}
+                                            </motion.p>
+                                        )}
                                     </div>
 
                                     <div className="space-y-3">

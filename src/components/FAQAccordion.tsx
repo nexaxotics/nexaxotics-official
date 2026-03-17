@@ -63,7 +63,7 @@ export default function FAQAccordion() {
                             >
                                 {isOpen
                                     ? <Minus className="w-4 h-4 text-primary" />
-                                    : <Plus className="w-4 h-4 text-muted-foreground" />
+                                    : <Plus className="w-4 h-4 text-muted-foreground/80" />
                                 }
                             </span>
                         </button>

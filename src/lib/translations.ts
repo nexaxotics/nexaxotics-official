@@ -34,7 +34,7 @@ export const translations = {
 
         // Home Page - Services (Systems)
         'home.services.title': 'Core Systems',
-        'home.services.subtitle': 'Four integrated components.',
+        'home.services.subtitle': 'Seven integrated components.',
         'home.services.leadRecovery': 'Lead Recovery (RARE)',
         'home.services.leadRecoveryDesc': 'Turn dead data into revenue with AI re-activation.',
         'home.services.aiBot': 'Micro-SaaS Backend',
@@ -233,7 +233,7 @@ export const translations = {
 
         // Systems Page (Detailed)
         'systems.title1': 'The Product',
-        'systems.title2': '4 Growth',
+        'systems.title2': '7 Growth',
         'systems.subtitle': 'Systems.',
 
         'systems.leadRecovery.title': 'Lead Recovery (RARE)',
@@ -263,6 +263,27 @@ export const translations = {
         'systems.content.benefit1': 'Objection Handling',
         'systems.content.benefit2': 'Customer Stories',
         'systems.content.benefit3': 'Founder Videos',
+
+        'systems.ugc.title': 'UGC AI Influencer',
+        'systems.ugc.does': 'Authentic promotion at scale.',
+        'systems.ugc.gets': 'AI-powered influencer content & micro-influencer campaigns.',
+        'systems.ugc.benefit1': 'AI Content Generation',
+        'systems.ugc.benefit2': 'Micro-Influencer Network',
+        'systems.ugc.benefit3': 'Authentic UGC at Scale',
+
+        'systems.landing.title': 'Premium Landing Page',
+        'systems.landing.does': 'Convert visitors to customers.',
+        'systems.landing.gets': 'SEO-optimized, conversion-focused landing pages.',
+        'systems.landing.benefit1': 'SEO Optimization',
+        'systems.landing.benefit2': 'Conversion Rate Focus',
+        'systems.landing.benefit3': 'Fast Load Times',
+
+        'systems.fullstack.title': 'Full Stack Websites',
+        'systems.fullstack.does': 'Complete web solutions.',
+        'systems.fullstack.gets': 'Custom web applications with backend & admin panels.',
+        'systems.fullstack.benefit1': 'Custom Backend',
+        'systems.fullstack.benefit2': 'Admin Dashboard',
+        'systems.fullstack.benefit3': 'API Integration',
 
         'systems.whatItDoes': 'Goal',
         'systems.whatYouGet': 'Includes',
@@ -601,6 +622,28 @@ export const translations = {
         'systems.content.benefit1': 'वीडियो नर्चर सीक्वेंस',
         'systems.content.benefit2': 'ऑटो-केस स्टडीज',
         'systems.content.benefit3': 'अथॉरिटी बिल्डिंग',
+
+        'systems.ugc.title': 'UGC AI इन्फ्लुएंसर',
+        'systems.ugc.does': 'बड़े पैमाने पर प्रामाणिक प्रचार।',
+        'systems.ugc.gets': 'AI-संचालित इन्फ्लुएंसर सामग्री और माइक्रो-इन्फ्लुएंसर अभियान।',
+        'systems.ugc.benefit1': 'AI कंटेंट जनरेशन',
+        'systems.ugc.benefit2': 'माइक्रो-इन्फ्लुएंसर नेटवर्क',
+        'systems.ugc.benefit3': 'बड़े पैमाने पर प्रामाणिक UGC',
+
+        'systems.landing.title': 'प्रीमियम लैंडिंग पेज',
+        'systems.landing.does': 'विज़िटर्स को ग्राहकों में बदलें।',
+        'systems.landing.gets': 'SEO-अनुकूलित, रूपांतरण-केंद्रित लैंडिंग पेज।',
+        'systems.landing.benefit1': 'SEO अनुकूलन',
+        'systems.landing.benefit2': 'रूपांतरण दर फोकस',
+        'systems.landing.benefit3': 'तेज़ लोड समय',
+
+        'systems.fullstack.title': 'फुल स्टैक वेबसाइट्स',
+        'systems.fullstack.does': 'संपूर्ण वेब समाधान।',
+        'systems.fullstack.gets': 'बैकएंड और एडमिन पैनल के साथ कस्टम वेब एप्लिकेशन।',
+        'systems.fullstack.benefit1': 'कस्टम बैकएंड',
+        'systems.fullstack.benefit2': 'एडमिन डैशबोर्ड',
+        'systems.fullstack.benefit3': 'API एकीकरण',
+
         'systems.whatItDoes': 'यह क्या करता है',
         'systems.whatYouGet': 'आपको क्या मिलता है',
         'systems.architectureDesc': 'आर्किटेक्चर का विस्तृत विवरण।',

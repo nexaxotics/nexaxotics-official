@@ -22,6 +22,7 @@ export default function Logo({ className = "", animate = false }: LogoProps) {
                     alt="NEXAXOTICS Logo"
                     fill
                     className="object-contain"
+                    sizes="100%"
                     priority
                 />
             </motion.div>
