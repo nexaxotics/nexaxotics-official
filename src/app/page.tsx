@@ -420,11 +420,8 @@ export default function Home() {
             {/* ── HERO BACKGROUND ─────────────────────────────── */}
             {/* Base gradient wash */}
             <div
-                className="absolute inset-0 z-0 pointer-events-none"
+                className="absolute inset-0 z-0 pointer-events-none bg-background"
                 aria-hidden="true"
-                style={{
-                    background: "linear-gradient(135deg, hsl(222 50% 5%) 0%, hsl(240 45% 8%) 50%, hsl(222 50% 4%) 100%)"
-                }}
             />
             {/* Fine grid overlay */}
             <div className="absolute inset-0 z-0 hero-grid pointer-events-none opacity-60" aria-hidden="true" />
@@ -439,7 +436,7 @@ export default function Home() {
             </div>
             {/* Fade bottom to body bg */}
             <div className="absolute bottom-0 left-0 w-full h-48 z-0 pointer-events-none"
-                style={{ background: "linear-gradient(to bottom, transparent, hsl(222 50% 5%))" }}
+                style={{ background: "linear-gradient(to bottom, transparent, hsl(var(--background)))" }}
                 aria-hidden="true"
             />
 
@@ -450,7 +447,7 @@ export default function Home() {
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/10 mb-8"
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-black/ mb-8"
                         >
                             <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
                             <span className="text-xs font-bold uppercase tracking-widest text-primary">{t('header.badge')}</span>
@@ -485,13 +482,13 @@ export default function Home() {
                                 href="#contact"
                                 className="group relative inline-flex items-center gap-2 px-10 py-4 bg-primary text-primary-foreground rounded-full font-bold text-base shadow-brand-glow hover:shadow-brand-glow-lg hover:scale-105 transition-all outline-none overflow-hidden"
                             >
-                                <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 rounded-full" />
+                                <span className="absolute inset-0 bg-black/ translate-y-full group-hover:translate-y-0 transition-transform duration-300 rounded-full" />
                                 <span className="relative">{t('home.hero.cta1')}</span>
                                 <ArrowRight className="relative w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </Link>
                             <Link
                                 href="#how-it-works"
-                                className="px-10 py-4 glass text-foreground rounded-full font-bold text-base hover:bg-white/10 transition-all"
+                                className="px-10 py-4 glass text-foreground rounded-full font-bold text-base hover:bg-black/ transition-all"
                             >
                                 {t('home.hero.cta2')}
                             </Link>
@@ -529,7 +526,7 @@ export default function Home() {
                         </div>
 
                         {/* New Standard */}
-                        <div className="p-8 rounded-3xl bg-primary/[0.06] border-2 border-primary/30 shadow-brand-glow relative overflow-hidden">
+                        <div className="p-8 rounded-3xl bg-primary/10 border-2 border-primary/30 shadow-brand-glow relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-4 opacity-10">
                                 <Rocket className="w-24 h-24 text-primary" />
                             </div>
@@ -638,7 +635,7 @@ export default function Home() {
                                 onClick={() => setSelectedIndustry(ind)}
                             >
                                 <div className="p-7 rounded-[1.75rem] bg-white/[0.04] border border-white/[0.08] hover:border-primary/30 hover:shadow-brand-glow transition-all duration-300 h-full flex flex-col items-center text-center">
-                                    <div className="w-20 h-20 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                                    <div className="w-20 h-20 rounded-2xl bg-black/ border border-black/ flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
                                         {ind.icon}
                                     </div>
                                     <h3 className="text-2xl font-bold mb-3">{ind.name}</h3>
@@ -669,7 +666,7 @@ export default function Home() {
                                     <button
                                         onClick={() => setSelectedIndustry(null)}
                                         aria-label="Close"
-                                        className="absolute top-8 right-8 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors z-20"
+                                        className="absolute top-8 right-8 w-12 h-12 rounded-full bg-black/ flex items-center justify-center hover:bg-black/ transition-colors z-20"
                                     >
                                         <X className="w-6 h-6" />
                                     </button>
@@ -738,7 +735,7 @@ export default function Home() {
                                                 <span className="text-xs font-bold uppercase tracking-widest text-foreground/50">System Highlights</span>
                                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                                     {selectedIndustry.features.map((f, i) => (
-                                                        <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.06] border border-white/10 shadow-sm">
+                                                        <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.06] border border-black/ shadow-sm">
                                                             <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
                                                                 <CheckCircle2 className="w-3 h-3" />
                                                             </div>
@@ -767,7 +764,7 @@ export default function Home() {
                                                         <span className="text-sm font-bold opacity-90">{t('industries.modal.why3')}</span>
                                                     </div>
                                                 </div>
-                                                <div className="mt-6 pt-6 border-t border-white/10 flex items-center justify-between">
+                                                <div className="mt-6 pt-6 border-t border-black/ flex items-center justify-between">
                                                     <span className="text-xs font-bold text-foreground/45 italic">Target ROI: High</span>
                                                     <span className="text-xs font-black text-primary uppercase tracking-widest">{t('industries.modal.investment')}</span>
                                                 </div>
@@ -819,7 +816,7 @@ export default function Home() {
                         <div className="grid grid-cols-1 md:grid-cols-7 gap-8 relative z-10">
                             {steps.map((step, i) => (
                                 <div key={i} className="flex flex-col items-center text-center group">
-                                    <div className="w-24 h-24 rounded-full bg-white/[0.06] border-2 border-white/15 flex items-center justify-center text-primary group-hover:border-primary group-hover:-translate-y-2 transition-all duration-300 mb-6 relative z-20 shadow-lg group-hover:shadow-brand-glow">
+                                    <div className="w-24 h-24 rounded-full bg-white/[0.06] border-2 border-black/ flex items-center justify-center text-primary group-hover:border-primary group-hover:-translate-y-2 transition-all duration-300 mb-6 relative z-20 shadow-lg group-hover:shadow-brand-glow">
                                         {step.icon}
                                     </div>
                                     <h3 className="font-bold text-sm uppercase tracking-widest mb-3 bg-white/[0.08] px-3 py-1 rounded-full text-foreground">{step.label}</h3>
@@ -927,7 +924,7 @@ export default function Home() {
                                             <span className="text-[9px] text-muted-foreground">{r.label}</span>
                                             <span className="text-[9px] font-black text-foreground">{r.pct}%</span>
                                         </div>
-                                        <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+                                        <div className="h-1 bg-black/ rounded-full overflow-hidden">
                                             <div className={`h-full ${r.color} rounded-full`} style={{ width: `${r.pct}%` }} />
                                         </div>
                                     </div>
@@ -962,7 +959,7 @@ export default function Home() {
                                 <Quote className="w-8 h-8 text-primary/30 mb-5" />
                                 <p className="text-base italic text-muted-foreground mb-7 flex-grow leading-relaxed">"{review.content}"</p>
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full bg-primary/10 border border-white/10 flex items-center justify-center shrink-0">
+                                    <div className="w-12 h-12 rounded-full bg-primary/10 border border-black/ flex items-center justify-center shrink-0">
                                         <Users className="w-6 h-6 text-primary" />
                                     </div>
                                     <div className="min-w-0">
@@ -1069,21 +1066,21 @@ export default function Home() {
 
                             <div className="space-y-8">
                                 <div className="flex items-start gap-5 group">
-                                    <div className="w-12 h-12 shrink-0 rounded-xl glass border border-white/10 flex items-center justify-center text-primary font-black text-lg group-hover:bg-primary group-hover:text-white transition-all shadow-brand-glow">1</div>
+                                    <div className="w-12 h-12 shrink-0 rounded-xl glass border border-black/ flex items-center justify-center text-primary font-black text-lg group-hover:bg-primary group-hover:text-white transition-all shadow-brand-glow">1</div>
                                     <p className="text-base font-medium leading-relaxed text-foreground/80 pt-2">{t('contact.step1')}</p>
                                 </div>
                                 <div className="flex items-start gap-5 group">
-                                    <div className="w-12 h-12 shrink-0 rounded-xl glass border border-white/10 flex items-center justify-center text-primary font-black text-lg group-hover:bg-primary group-hover:text-white transition-all shadow-brand-glow">2</div>
+                                    <div className="w-12 h-12 shrink-0 rounded-xl glass border border-black/ flex items-center justify-center text-primary font-black text-lg group-hover:bg-primary group-hover:text-white transition-all shadow-brand-glow">2</div>
                                     <p className="text-base font-medium leading-relaxed text-foreground/80 pt-2">{t('contact.step2')}</p>
                                 </div>
                                 <div className="flex items-start gap-5 group">
-                                    <div className="w-12 h-12 shrink-0 rounded-xl glass border border-white/10 flex items-center justify-center text-primary font-black text-lg group-hover:bg-primary group-hover:text-white transition-all shadow-brand-glow">3</div>
+                                    <div className="w-12 h-12 shrink-0 rounded-xl glass border border-black/ flex items-center justify-center text-primary font-black text-lg group-hover:bg-primary group-hover:text-white transition-all shadow-brand-glow">3</div>
                                     <p className="text-base font-medium leading-relaxed text-foreground/80 pt-2">{t('contact.step3')}</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="bento-card border-white/10 shadow-brand-glow-lg overflow-hidden relative">
+                        <div className="bento-card border-black/ shadow-brand-glow-lg overflow-hidden relative">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -translate-y-32 translate-x-32"></div>
                             {submitted ? (
                                 <div className="glass p-12 rounded-[3rem] text-center max-w-xl animate-in zoom-in-95 duration-500">
@@ -1174,7 +1171,7 @@ export default function Home() {
                                     <div className="space-y-3">
                                         <label htmlFor="budget" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">{t('contact.form.budget')}</label>
                                         <div className="relative">
-                                            <select id="budget" name="budget" className="w-full glass border border-white/10 rounded-2xl px-6 py-4 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all appearance-none cursor-pointer">
+                                            <select id="budget" name="budget" className="w-full glass border border-black/ rounded-2xl px-6 py-4 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all appearance-none cursor-pointer">
                                                 <option className="bg-background">{t('contact.form.budget1')}</option>
                                                 <option className="bg-background">{t('contact.form.budget2')}</option>
                                                 <option className="bg-background">{t('contact.form.budget3')}</option>

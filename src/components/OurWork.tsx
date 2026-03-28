@@ -253,7 +253,7 @@ export default function OurWork() {
                         {/* Close Button */}
                         <button
                             onClick={() => setSelectedProject(null)}
-                            className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full glass border border-white/20 flex items-center justify-center hover:border-primary/50 transition-all group"
+                            className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full glass border border-black/ flex items-center justify-center hover:border-primary/50 transition-all group"
                         >
                             <X className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
                         </button>

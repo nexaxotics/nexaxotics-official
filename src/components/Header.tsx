@@ -98,6 +98,13 @@ export default function Header() {
                             >
                                 Client Login
                             </Link>
+                            <Link
+                                href="#contact"
+                                className="px-5 py-2 text-sm font-bold bg-primary text-white rounded-full hover:bg-primary/90 transition-colors hidden sm:block shadow-brand-glow"
+                                aria-label="Book Audit"
+                            >
+                                Book Audit
+                            </Link>
                         </motion.div>
 
                         {/* Mobile Menu Toggle */}

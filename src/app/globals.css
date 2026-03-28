@@ -3,34 +3,34 @@
 @tailwind utilities;
 
 :root {
-  /* ── Deep Navy Dark Theme ── */
-  --background: 222 47% 5%;       /* #05080f */
-  --foreground: 210 20% 96%;      /* #F5F7FB — brightest white for best contrast */
+  /* ── Clean Light Theme ── */
+  --background: 0 0% 100%;        /* #FFFFFF */
+  --foreground: 222 47% 5%;       /* #05080f */
 
-  --card: 222 40% 8%;             /* #0a1020 */
-  --card-foreground: 210 20% 96%;
+  --card: 0 0% 100%;              /* #FFFFFF */
+  --card-foreground: 222 47% 5%;
 
-  --popover: 222 40% 7%;
-  --popover-foreground: 210 20% 96%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 5%;
 
   /* Brand Palette */
   --primary: 190 100% 50%;        /* #00D7FF — vivid cyan */
-  --primary-foreground: 222 47% 5%;
+  --primary-foreground: 0 0% 100%;
 
-  --secondary: 262 83% 65%;       /* #9b6ef3 — lifted purple for dark */
+  --secondary: 262 83% 65%;       /* #9b6ef3 — purple */
   --secondary-foreground: 0 0% 100%;
 
-  --muted: 222 35% 13%;           /* subtle dark surface */
-  --muted-foreground: 215 13% 74%; /* brighter for 7+:1 contrast ratio */
+  --muted: 210 40% 96.1%;         /* subtle light gray */
+  --muted-foreground: 215.4 16.3% 46.9%;
 
-  --accent: 222 35% 13%;
-  --accent-foreground: 210 20% 96%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
 
-  --destructive: 0 72% 51%;
-  --destructive-foreground: 0 0% 98%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
 
-  --border: 222 30% 16%;          /* #192234 — brighter borders */
-  --input: 222 35% 13%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
   --ring: 190 100% 50%;
 }
 
@@ -73,19 +73,19 @@
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
 }
 
 .glass-morphe {
-  background: rgba(8, 12, 22, 0.88);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
 }
 
 .text-gradient {
@@ -101,8 +101,8 @@
 /* Hero grid overlay */
 .hero-grid {
   background-image:
-    linear-gradient(rgba(0,215,255,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,215,255,0.05) 1px, transparent 1px);
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
