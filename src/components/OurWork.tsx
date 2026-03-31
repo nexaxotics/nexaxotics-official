@@ -33,6 +33,23 @@ const projects: Project[] = [
         results: "Created engaging UGC content that mimics authentic influencer promotion"
     },
     {
+        title: "Honda Vishwakarma",
+        category: "Business Site",
+        description: "Modern, responsive website for Honda Vishwakarma dealership with product showcase, enquiry forms, and contact details.",
+        thumbnail: "https://image.thum.io/get/width/800/crop/600/https://honda-vishwakarma.vercel.app/",
+        liveUrl: "https://honda-vishwakarma.vercel.app/",
+        technologies: ["Next.js", "React", "Tailwind CSS", "Vercel"],
+        timeline: "2 weeks",
+        features: [
+            "Product showcase",
+            "Responsive design",
+            "Enquiry/contact forms",
+            "Location & contact info",
+            "SEO optimized"
+        ],
+        results: "Launched a new digital presence for the dealership, improving lead generation and customer engagement."
+    },
+    {
         title: "ZaikaCafé",
         category: "Landing Page",
         description: "Full-featured restaurant landing page for an authentic Indian café — menu, table booking, testimonials & catering.",
