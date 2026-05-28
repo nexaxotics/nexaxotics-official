@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nexaxotics.com/sitemap.xml
+Sitemap: https://nexaxotics.in/sitemap.xml

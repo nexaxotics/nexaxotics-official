@@ -18,19 +18,15 @@ export const metadata: Metadata = {
     authors: [{ name: "NEXAXOTICS" }],
     creator: "NEXAXOTICS",
     publisher: "NEXAXOTICS",
-    metadataBase: new URL("https://nexaxotics.com"),
+    metadataBase: new URL("https://nexaxotics.in"),
     alternates: {
-        canonical: "/",
-        languages: {
-            'en-US': '/en',
-            'hi-IN': '/hi',
-        },
+        canonical: "https://nexaxotics.in",
     },
     category: 'technology',
     openGraph: {
         type: "website",
         locale: "en_US",
-        url: "https://nexaxotics.com",
+        url: "https://nexaxotics.in",
         siteName: "NEXAXOTICS",
         title: "NEXAXOTICS | Customer Acquisition Systems",
         description: "We don't run ads — we build automated systems that bring you customers 24/7. Book your free growth audit.",
@@ -84,10 +80,10 @@ export default function RootLayout({
                             "@graph": [
                                 {
                                     "@type": "Organization",
-                                    "@id": "https://nexaxotics.com/#organization",
+                                    "@id": "https://nexaxotics.in/#organization",
                                     "name": "NEXAXOTICS",
-                                    "url": "https://nexaxotics.com",
-                                    "logo": "https://nexaxotics.com/logo.png",
+                                    "url": "https://nexaxotics.in",
+                                    "logo": "https://nexaxotics.in/logo.png",
                                     "description": "Customer acquisition systems for small businesses. Automated lead generation, CRM, and sales funnels.",
                                     "sameAs": [],
                                     "contactPoint": {
@@ -98,21 +94,21 @@ export default function RootLayout({
                                 },
                                 {
                                     "@type": "WebSite",
-                                    "@id": "https://nexaxotics.com/#website",
-                                    "url": "https://nexaxotics.com",
+                                    "@id": "https://nexaxotics.in/#website",
+                                    "url": "https://nexaxotics.in",
                                     "name": "NEXAXOTICS",
-                                    "publisher": { "@id": "https://nexaxotics.com/#organization" },
+                                    "publisher": { "@id": "https://nexaxotics.in/#organization" },
                                     "inLanguage": ["en-US", "hi-IN"],
                                     "potentialAction": {
                                         "@type": "SearchAction",
-                                        "target": "https://nexaxotics.com/?s={search_term_string}",
+                                        "target": "https://nexaxotics.in/?s={search_term_string}",
                                         "query-input": "required name=search_term_string"
                                     }
                                 },
                                 {
                                     "@type": "Service",
                                     "serviceType": "Customer Acquisition System",
-                                    "provider": { "@id": "https://nexaxotics.com/#organization" },
+                                    "provider": { "@id": "https://nexaxotics.in/#organization" },
                                     "name": "4-System Customer Acquisition Engine",
                                     "description": "End-to-end automated system: lead capture, nurture sequences, CRM pipeline, and conversion optimization for small businesses.",
                                     "offers": {
