@@ -638,9 +638,10 @@ export default function Home() {
                                     <div className="w-20 h-20 rounded-2xl bg-black/ border border-black/ flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
                                         {ind.icon}
                                     </div>
-                                    <h3 className="text-2xl font-bold mb-3">{ind.name}</h3>
-                                    <p className="text-muted-foreground text-sm mb-6">{ind.benefit}</p>
-                                    <span className="text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest">{t('home.services.learnMore')}</span>
+                                    <h3 className="text-2xl font-bold mb-1">{ind.name}</h3>
+                                    <span className="text-xs font-bold uppercase tracking-wider text-primary mb-4 block">{ind.benefit}</span>
+                                    <p className="text-muted-foreground text-sm mb-6 max-w-xs">{ind.details}</p>
+                                    <span className="text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest mt-auto">{t('home.services.learnMore')}</span>
                                 </div>
                             </motion.div>
                         ))}

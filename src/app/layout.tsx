@@ -122,26 +122,50 @@ export default function RootLayout({
                                     "mainEntity": [
                                         {
                                             "@type": "Question",
-                                            "name": "What is a customer acquisition system?",
+                                            "name": "What exactly is a customer acquisition system?",
                                             "acceptedAnswer": {
                                                 "@type": "Answer",
-                                                "text": "A customer acquisition system is an automated pipeline that attracts, captures, nurtures, and converts prospects into paying customers — without manual effort on your part."
+                                                "text": "It's a fully automated pipeline — ads, landing pages, lead capture, nurture sequences, CRM, and booking — all connected and running 24/7. You stop chasing leads; the system does it for you."
                                             }
                                         },
                                         {
                                             "@type": "Question",
-                                            "name": "How is NEXAXOTICS different from a regular marketing agency?",
+                                            "name": "Do I need to run ads for this to work?",
                                             "acceptedAnswer": {
                                                 "@type": "Answer",
-                                                "text": "We don't run ads or manage campaigns. We architect systems — automated funnels, CRM pipelines, and conversion infrastructure — that keep generating leads on autopilot."
+                                                "text": "Not necessarily. Some of our systems work entirely on organic reach, WhatsApp re-activation, and referral loops. If you do run ads, we make sure every rupee is tracked to an actual booking or sale."
                                             }
                                         },
                                         {
                                             "@type": "Question",
-                                            "name": "How long does it take to see results?",
+                                            "name": "How long until I see results?",
                                             "acceptedAnswer": {
                                                 "@type": "Answer",
-                                                "text": "Most clients see their first automated lead flows within 2–4 weeks of onboarding. Full system ROI typically materializes within 60–90 days."
+                                                "text": "Most clients see their first automated leads within 2–4 weeks of going live. Full system ROI — where the revenue eclipses the monthly fee — typically happens within 60–90 days."
+                                            }
+                                        },
+                                        {
+                                            "@type": "Question",
+                                            "name": "Is this only for certain industries?",
+                                            "acceptedAnswer": {
+                                                "@type": "Answer",
+                                                "text": "No. We work with clinics, gyms, real estate agents, coaches, e-commerce brands, and local service businesses. If you have a sales process, we can automate it."
+                                            }
+                                        },
+                                        {
+                                            "@type": "Question",
+                                            "name": "What makes NEXAXOTICS different from a regular agency?",
+                                            "acceptedAnswer": {
+                                                "@type": "Answer",
+                                                "text": "A regular agency gives you deliverables (posts, ads, reports). We give you infrastructure. The system we build keeps working after we're done — you own the pipeline, the CRM, the automations."
+                                            }
+                                        },
+                                        {
+                                            "@type": "Question",
+                                            "name": "What happens on the free audit call?",
+                                            "acceptedAnswer": {
+                                                "@type": "Answer",
+                                                "text": "We analyze your current lead flow, identify the biggest gaps, and map out a concrete system design specific to your business. You leave with an actionable blueprint — no pitch, no pressure."
                                             }
                                         }
                                     ]
